@@ -11,4 +11,54 @@
         max-height: 300px;
         margin: 0 auto;
     }
+    label {
+        width: 120px;
+    }
+    .input-file-container {
+        position: relative;
+        margin-bottom: 24px;
+        .input-file {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 225px;
+            opacity: 0;
+            padding: 14px 0;
+            cursor: pointer;
+        }
+        .button-select-file {
+            display: flex;
+            align-items: center;
+            width: 120px;
+            height: 35px;
+            justify-content: center;
+            background: #1890ff;
+            color: #ffffff;
+            border-radius: 2px;
+        }
+        .preview {
+            margin-top: 24px;
+            width: 200px;
+            height: auto;
+        }
+    }
+}
+
+.table {
+    &__wrap-button {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        height: 70px;
+        a {
+            display: flex;
+            align-items: center;
+            width: 120px;
+            height: 35px;
+            justify-content: center;
+            background: #1890ff;
+            color: #ffffff;
+            border-radius: 2px;
+        }
+    }
 }

@@ -1,8 +1,9 @@
-import * as React from "react";
-import { Table as TableANTD, Tag, Button } from "antd";
-import { API_URL } from "../../../config";
 import "./style.scss";
-import { Item, deleteItem, getApi, saveAction } from "../../redux/store";
+
+import * as React from "react";
+import { Table as TableANTD, Button } from "antd";
+import { API_URL } from "../../../config";
+import { Item, deleteItem, getApi } from "../../redux/storeHome";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -11,18 +12,17 @@ var moment = require("moment");
 interface TableListProps {
     items: Item[];
     Deleteitem: (item: Item) => void;
-    Edititem: (item: Item) => void;
     mapAllapitoprops: (item: Item[]) => void;
 }
 
-class Table extends React.Component<TableListProps> {
+class HomeImageGallery extends React.Component<TableListProps> {
     constructor(props) {
         super(props);
         this.state = {};
     }
 
     componentDidMount() {
-        fetch(`${API_URL}/projects`)
+        fetch(`${API_URL}/homes`)
             .then(res => res.json())
             .then(
                 result => {
@@ -35,19 +35,18 @@ class Table extends React.Component<TableListProps> {
                                 "DD-MM-YYYY"
                             ),
                             image: item.Image.url,
-                            title: item.Title,
-                            description: item.Description,
+                            link: item.link,
                             action_delete: {
                                 id: Number(item.id),
+                                link: item.link,
                                 created_at: moment(item.updated_at).format(
                                     ",DD-MM-YYYY"
                                 ),
-                                title: item.Title,
-                                description: item.Description,
-                                action_delete: API_URL + "/projects" + item.id
+                                action_delete: API_URL + "/homes" + item.id
                             }
                         });
                     });
+                    console.log(newResult, "new");
                     this.props.mapAllapitoprops(newResult);
                 },
                 error => {
@@ -57,14 +56,12 @@ class Table extends React.Component<TableListProps> {
     }
 
     render() {
-        const { items, Deleteitem, Edititem } = this.props;
+        const { items, Deleteitem } = this.props;
 
         return (
             <div className="table">
                 <div className="table__wrap-button">
-                    <Link pr to="/project/add">
-                        ADD NEW
-                    </Link>
+                    <Link to="/home/add">ADD NEW</Link>
                 </div>
                 <TableANTD
                     bordered
@@ -74,12 +71,8 @@ class Table extends React.Component<TableListProps> {
                             dataIndex: "id"
                         },
                         {
-                            title: "Title",
-                            dataIndex: "title"
-                        },
-                        {
-                            title: "Update_as",
-                            dataIndex: "created_at"
+                            title: "link",
+                            dataIndex: "link"
                         },
                         {
                             title: "image",
@@ -92,24 +85,14 @@ class Table extends React.Component<TableListProps> {
                             key: "Action",
                             dataIndex: "action_delete",
                             render: action => (
-                                <>
-                                    <Button
-                                        type="danger"
-                                        onClick={() => {
-                                            Deleteitem(action);
-                                        }}
-                                    >
-                                        Delete
-                                    </Button>
-                                    <Button
-                                        type="primary"
-                                        onClick={() => {
-                                            Edititem(action);
-                                        }}
-                                    >
-                                        Edit
-                                    </Button>
-                                </>
+                                <Button
+                                    type="danger"
+                                    onClick={() => {
+                                        Deleteitem(action);
+                                    }}
+                                >
+                                    Delete
+                                </Button>
                             )
                         }
                     ]}
@@ -134,11 +117,8 @@ const mapDispatchtoProps = dispatch => {
         },
         Deleteitem: item => {
             dispatch(deleteItem(item));
-        },
-        Edititem: item => {
-            dispatch(saveAction(item));
         }
     };
 };
 
-export default connect(mapStateToProps, mapDispatchtoProps)(Table);
+export default connect(mapStateToProps, mapDispatchtoProps)(HomeImageGallery);

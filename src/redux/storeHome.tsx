@@ -8,20 +8,17 @@ export interface Store {
 
 export interface Item {
     id?: number;
-    created_at?: string;
+    link?: string;
     image?: string;
-    title?: boolean;
-    description?: string;
-    action_delete?: any;
+    created_at?: string;
 }
 
-interface ProjectReducer
-    extends Action<"GET" | "ADD" | "UPDATE" | "DELETE" | "SAVE"> {
+interface HomesReducer extends Action<"GET" | "ADD" | "UPDATE" | "DELETE"> {
     item?: Item;
     states?: Item[];
 }
 
-const Projectreducer = (state: Item[] = [], action: ProjectReducer) => {
+const HomesReducer = (state: Item[] = [], action: HomesReducer) => {
     switch (action.type) {
         case "GET":
             return (state = action.states);
@@ -33,20 +30,17 @@ const Projectreducer = (state: Item[] = [], action: ProjectReducer) => {
                 return state;
             }
             UpdatingTodo.image = action.item.image;
-            UpdatingTodo.title = action.item.title;
+            UpdatingTodo.link = action.item.link;
             return [...state];
         case "DELETE":
             return state.filter(o => o.id !== action.item.id);
-        case "SAVE":
-            state.push(action.item);
-            return [...state];
         default:
             return state;
     }
 };
 
 const reducers = combineReducers<Store>({
-    items: Projectreducer
+    items: HomesReducer
 });
 
 const loggerMiddleware = store => {
@@ -80,8 +74,10 @@ const deleteItemMiddleware = store => next => action => {
     if (action.type !== "DELETE") {
         return next(action);
     }
+    console.log(action.item.id);
+
     axios
-        .delete(`${API_URL}/projects/${action.item.id}`, {
+        .delete(`${API_URL}/homes/${action.item.id}`, {
             data: {
                 id: action.item.id
             }
@@ -120,7 +116,7 @@ const updateItemMiddleware = store => next => action => {
 };
 
 const reducer = combineReducers({
-    items: Projectreducer
+    items: HomesReducer
 });
 
 export const store = createStore(
@@ -138,24 +134,17 @@ export const getApi = (states: Item[]) => ({
     states
 });
 
-export const addItem = (item: Item): ProjectReducer => ({
+export const addItem = (item: Item): HomesReducer => ({
     type: "ADD",
     item: item
 });
 
-export const saveAction = (item: Item): ProjectReducer => ({
-    type: "SAVE",
+export const updateItem = (item: Item): HomesReducer => ({
+    type: "UPDATE",
     item: item
 });
 
-export const deleteItem = (item: Item): ProjectReducer => ({
+export const deleteItem = (item: Item): HomesReducer => ({
     type: "DELETE",
     item: item
 });
-
-const UpdateItem = (states): ProjectReducer => ({
-    type: "UPDATE",
-    states
-});
-
-/* ====================== Home =========================== */

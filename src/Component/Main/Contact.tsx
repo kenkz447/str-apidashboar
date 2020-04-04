@@ -5,7 +5,7 @@ import axios from "axios";
 import { API_URL } from "../../../config";
 const { TextArea } = Input;
 
-export const FormAddProject = () => {
+export const EditProject = info => {
     const [file, setFile] = React.useState({});
 
     const [inputValue, setInputValue] = React.useState(null);
@@ -41,7 +41,7 @@ export const FormAddProject = () => {
                     { required: true, message: "Please input your Title!" }
                 ]}
             >
-                <Input />
+                <Input defaultValue={info.Title} />
             </Form.Item>
             <Form.Item
                 label="Description"
@@ -53,7 +53,7 @@ export const FormAddProject = () => {
                     }
                 ]}
             >
-                <TextArea />
+                <TextArea defaultValue={info.Description} />
             </Form.Item>
             <Form.Item
                 label="Client"
@@ -71,9 +71,17 @@ export const FormAddProject = () => {
                     { required: true, message: "Please input your Share!" }
                 ]}
             >
+                <Input defaultValue={info.Share} />
+            </Form.Item>
+            <Form.Item
+                label="Share"
+                name="Share"
+                rules={[
+                    { required: true, message: "Please input your Share!" }
+                ]}
+            >
                 <Input />
             </Form.Item>
-
             <div className="input-file-container">
                 <label className="button-select-file" id="myfile">
                     Add Image

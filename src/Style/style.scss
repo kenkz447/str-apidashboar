@@ -7,11 +7,9 @@ body {
         min-height: inherit;
         .ant-layout {
             min-height: inherit;
-            & > * {
-                border: 1px solid #333333;
-            }
             .ant-layout-sider {
-                background: #f0f2f5;
+                background: #ffffff;
+                border-right: 1px solid #f0f0f0;
                 .logo {
                     font-weight: 800;
                     display: flex;
@@ -20,20 +18,39 @@ body {
                     margin-bottom: 0;
                     padding-left: 24px;
                     color: #5b8c00;
+                    border-bottom: 1px solid #f0f0f0;
+                    height: 64px;
+                }
+                .ant-list-item {
+                    padding-left: 24px;
+                    a {
+                        color: #2c3e50;
+                        font-weight: 600;
+                        &:hover {
+                            color: #077ff7;
+                        }
+                    }
                 }
             }
             .ant-layout-header {
-                background: #f0f2f5;
+                background: #ffffff;
+                border-bottom: 1px solid #f0f0f0;
             }
             .ant-layout-footer {
+                border-top: 1px solid #f0f0f0;
+                background: #ffffff;
                 display: flex;
                 align-items: center;
                 justify-content: flex-end;
-
+                padding: 15px 50px;
                 p {
                     padding: 0;
                     margin: 0;
                 }
+            }
+            .ant-layout-content {
+                background: #ffffff;
+                padding: 15px 50px;
             }
         }
     }

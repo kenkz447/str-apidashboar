@@ -6,28 +6,33 @@ const ManifestPlugin = require("webpack-manifest-plugin");
 module.exports = {
     mode: "development",
     entry: {
-        typescript: "./src/index.tsx",
-        app: "./src/index.js",
-        print: "./src/print.js",
-        another: "./src/another-module.js"
-    },
-    resolve: {
-        extensions: [".ts", ".tsx", ".js"],
+        typescript: "./src/index.tsx"
     },
     devtool: "inline-source-map",
     devServer: {
+        historyApiFallback: true,
+        hot: true,
         contentBase: "./dist"
     },
+    resolve: {
+        extensions: [".ts", ".tsx", ".js"],
+        alias: {
+            _Style: path.resolve(__dirname, "./src/style/"),
+            _Home: path.resolve(__dirname, "./src/component/Home")
+        }
+    },
+    devServer: {},
     plugins: [
         new ManifestPlugin(),
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            title: "dahsboar"
+            title: "Caching"
         })
     ],
     output: {
         filename: "[name].[contenthash].js",
-        path: path.resolve(__dirname, "dist")
+        path: path.resolve(__dirname, "dist"),
+        publicPath: "/"
     },
     optimization: {
         runtimeChunk: "single",
@@ -63,7 +68,27 @@ module.exports = {
             },
             {
                 test: /\.(png|svg|jpg|gif)$/,
-                use: ["file-loader"]
+                use: [
+                    {
+                        loader: "file-loader",
+                        options: {
+                            esModule: false
+                        }
+                    }
+                ]
+            },
+            {
+                test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                use: [
+                    {
+                        loader: "file-loader",
+                        options: {
+                            name: "[name].[ext]",
+                            outputPath: "fonts/",
+                            publicPath: "../fonts"
+                        }
+                    }
+                ]
             }
         ]
     }

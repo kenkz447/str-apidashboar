@@ -1,11 +1,17 @@
-import * as React from "react";
 import "./style.scss";
 import { Form, Input, Button } from "antd";
 import axios from "axios";
 import { API_URL } from "../../../config";
 const { TextArea } = Input;
 
-export const FormAddProject = () => {
+import "./style.scss";
+
+import * as React from "react";
+import { Item, updateItem, getApi } from "../../redux/storeHome";
+import { connect } from "react-redux";
+import { render } from "../..";
+
+const FormAddProject = info => {
     const [file, setFile] = React.useState({});
 
     const [inputValue, setInputValue] = React.useState(null);
@@ -41,7 +47,7 @@ export const FormAddProject = () => {
                     { required: true, message: "Please input your Title!" }
                 ]}
             >
-                <Input />
+                <Input defaultValue={info.Title} />
             </Form.Item>
             <Form.Item
                 label="Description"
@@ -53,7 +59,7 @@ export const FormAddProject = () => {
                     }
                 ]}
             >
-                <TextArea />
+                <TextArea defaultValue={info.Description} />
             </Form.Item>
             <Form.Item
                 label="Client"
@@ -62,7 +68,7 @@ export const FormAddProject = () => {
                     { required: true, message: "Please input your Client!" }
                 ]}
             >
-                <Input />
+                <Input defaultValue={info.Client} />
             </Form.Item>
             <Form.Item
                 label="Share"
@@ -71,7 +77,7 @@ export const FormAddProject = () => {
                     { required: true, message: "Please input your Share!" }
                 ]}
             >
-                <Input />
+                <Input defaultValue={info.Share} />
             </Form.Item>
 
             <div className="input-file-container">
@@ -100,12 +106,16 @@ export const FormAddProject = () => {
                     }}
                     type="file"
                 />
-                {inputValue && <img className="preview" src={inputValue} />}
+                {inputValue ? (
+                    <img className="preview" src={inputValue} />
+                ) : (
+                    <img className="preview" src={API_URL + info.imgae} />
+                )}
             </div>
 
             <Form.Item>
                 <Button type="primary" htmlType="submit">
-                    Submit
+                    Edit
                 </Button>
             </Form.Item>
         </Form>

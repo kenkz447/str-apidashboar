@@ -3,9 +3,8 @@ import "./style.scss";
 import { Form, Input, Button } from "antd";
 import axios from "axios";
 import { API_URL } from "../../../config";
-const { TextArea } = Input;
 
-export const FormAddProject = () => {
+export const AddHomeImage = () => {
     const [file, setFile] = React.useState({});
 
     const [inputValue, setInputValue] = React.useState(null);
@@ -23,7 +22,7 @@ export const FormAddProject = () => {
         value.Image = file;
         console.log(value);
         axios
-            .post(`${API_URL}/projects`, value)
+            .post(`${API_URL}/homes`, value)
             .then(res => {
                 console.log(res);
             })
@@ -35,41 +34,9 @@ export const FormAddProject = () => {
     return (
         <Form className="form-add-project" onFinish={onsubmit}>
             <Form.Item
-                label="Title"
-                name="Title"
-                rules={[
-                    { required: true, message: "Please input your Title!" }
-                ]}
-            >
-                <Input />
-            </Form.Item>
-            <Form.Item
-                label="Description"
-                name="Description"
-                rules={[
-                    {
-                        required: true,
-                        message: "Please input your Description!"
-                    }
-                ]}
-            >
-                <TextArea />
-            </Form.Item>
-            <Form.Item
-                label="Client"
-                name="Client"
-                rules={[
-                    { required: true, message: "Please input your Client!" }
-                ]}
-            >
-                <Input />
-            </Form.Item>
-            <Form.Item
-                label="Share"
-                name="Share"
-                rules={[
-                    { required: true, message: "Please input your Share!" }
-                ]}
+                label="link"
+                name="link"
+                rules={[{ required: true, message: "Please input your link!" }]}
             >
                 <Input />
             </Form.Item>
