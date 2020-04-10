@@ -2,7 +2,7 @@ import * as React from "react";
 import { Table as TableANTD, Tag, Button } from "antd";
 import { API_URL } from "../../../config";
 import "./style.scss";
-import { Item, deleteItem, getApi, saveAction } from "../../redux/store";
+import { Item, deleteItem, getApi } from "../../redux/store";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -11,7 +11,6 @@ var moment = require("moment");
 interface TableListProps {
     items: Item[];
     Deleteitem: (item: Item) => void;
-    Edititem: (item: Item) => void;
     mapAllapitoprops: (item: Item[]) => void;
 }
 
@@ -23,12 +22,12 @@ class Table extends React.Component<TableListProps> {
 
     componentDidMount() {
         fetch(`${API_URL}/projects`)
-            .then(res => res.json())
+            .then((res) => res.json())
             .then(
-                result => {
+                (result) => {
                     console.log(result);
                     const newResult = [];
-                    result.map(item => {
+                    result.map((item) => {
                         return newResult.push({
                             id: Number(item.id),
                             created_at: moment(item.updated_at).format(
@@ -44,54 +43,52 @@ class Table extends React.Component<TableListProps> {
                                 ),
                                 title: item.Title,
                                 description: item.Description,
-                                action_delete: API_URL + "/projects" + item.id
-                            }
+                                action_delete: API_URL + "/projects" + item.id,
+                            },
                         });
                     });
                     this.props.mapAllapitoprops(newResult);
                 },
-                error => {
+                (error) => {
                     console.log(error);
                 }
             );
     }
 
     render() {
-        const { items, Deleteitem, Edititem } = this.props;
+        const { items, Deleteitem } = this.props;
 
         return (
             <div className="table">
                 <div className="table__wrap-button">
-                    <Link pr to="/project/add">
-                        ADD NEW
-                    </Link>
+                    <Link to="/project/add">ADD NEW</Link>
                 </div>
                 <TableANTD
                     bordered
                     columns={[
                         {
                             title: "id",
-                            dataIndex: "id"
+                            dataIndex: "id",
                         },
                         {
                             title: "Title",
-                            dataIndex: "title"
+                            dataIndex: "title",
                         },
                         {
                             title: "Update_as",
-                            dataIndex: "created_at"
+                            dataIndex: "created_at",
                         },
                         {
                             title: "image",
                             key: "image",
                             dataIndex: "image",
-                            render: e => <img src={API_URL + e} alt="" />
+                            render: (e) => <img src={API_URL + e} alt="" />,
                         },
                         {
                             title: "Action",
                             key: "Action",
                             dataIndex: "action_delete",
-                            render: action => (
+                            render: (action) => (
                                 <>
                                     <Button
                                         type="danger"
@@ -101,17 +98,15 @@ class Table extends React.Component<TableListProps> {
                                     >
                                         Delete
                                     </Button>
-                                    <Button
-                                        type="primary"
-                                        onClick={() => {
-                                            Edititem(action);
-                                        }}
+                                    <Link
+                                        className="btn-edit"
+                                        to={"/project/edit/:" + action.id}
                                     >
                                         Edit
-                                    </Button>
+                                    </Link>
                                 </>
-                            )
-                        }
+                            ),
+                        },
                     ]}
                     dataSource={items}
                     rowKey="id"
@@ -121,23 +116,20 @@ class Table extends React.Component<TableListProps> {
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
-        items: state.items
+        items: state.items,
     };
 };
 
-const mapDispatchtoProps = dispatch => {
+const mapDispatchtoProps = (dispatch) => {
     return {
-        mapAllapitoprops: item => {
+        mapAllapitoprops: (item) => {
             dispatch(getApi(item));
         },
-        Deleteitem: item => {
+        Deleteitem: (item) => {
             dispatch(deleteItem(item));
         },
-        Edititem: item => {
-            dispatch(saveAction(item));
-        }
     };
 };
 

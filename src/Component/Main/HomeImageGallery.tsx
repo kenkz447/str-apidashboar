@@ -23,12 +23,12 @@ class HomeImageGallery extends React.Component<TableListProps> {
 
     componentDidMount() {
         fetch(`${API_URL}/homes`)
-            .then(res => res.json())
+            .then((res) => res.json())
             .then(
-                result => {
+                (result) => {
                     console.log(result);
                     const newResult = [];
-                    result.map(item => {
+                    result.map((item) => {
                         return newResult.push({
                             id: Number(item.id),
                             created_at: moment(item.updated_at).format(
@@ -42,14 +42,14 @@ class HomeImageGallery extends React.Component<TableListProps> {
                                 created_at: moment(item.updated_at).format(
                                     ",DD-MM-YYYY"
                                 ),
-                                action_delete: API_URL + "/homes" + item.id
-                            }
+                                action_delete: API_URL + "/homes" + item.id,
+                            },
                         });
                     });
                     console.log(newResult, "new");
                     this.props.mapAllapitoprops(newResult);
                 },
-                error => {
+                (error) => {
                     console.log(error);
                 }
             );
@@ -68,33 +68,41 @@ class HomeImageGallery extends React.Component<TableListProps> {
                     columns={[
                         {
                             title: "id",
-                            dataIndex: "id"
+                            dataIndex: "id",
                         },
                         {
                             title: "link",
-                            dataIndex: "link"
+                            dataIndex: "link",
                         },
                         {
                             title: "image",
                             key: "image",
                             dataIndex: "image",
-                            render: e => <img src={API_URL + e} alt="" />
+                            render: (e) => <img src={API_URL + e} alt="" />,
                         },
                         {
                             title: "Action",
                             key: "Action",
                             dataIndex: "action_delete",
-                            render: action => (
-                                <Button
-                                    type="danger"
-                                    onClick={() => {
-                                        Deleteitem(action);
-                                    }}
-                                >
-                                    Delete
-                                </Button>
-                            )
-                        }
+                            render: (action) => (
+                                <>
+                                    <Button
+                                        type="danger"
+                                        onClick={() => {
+                                            Deleteitem(action);
+                                        }}
+                                    >
+                                        Delete
+                                    </Button>
+                                    <Link
+                                        className="btn-edit"
+                                        to={"/homes/edit/:" + action.id}
+                                    >
+                                        Edit
+                                    </Link>
+                                </>
+                            ),
+                        },
                     ]}
                     dataSource={items}
                     rowKey="id"
@@ -104,20 +112,20 @@ class HomeImageGallery extends React.Component<TableListProps> {
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
-        items: state.items
+        items: state.items,
     };
 };
 
-const mapDispatchtoProps = dispatch => {
+const mapDispatchtoProps = (dispatch) => {
     return {
-        mapAllapitoprops: item => {
+        mapAllapitoprops: (item) => {
             dispatch(getApi(item));
         },
-        Deleteitem: item => {
+        Deleteitem: (item) => {
             dispatch(deleteItem(item));
-        }
+        },
     };
 };
 

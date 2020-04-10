@@ -1,5 +1,52 @@
 import * as React from "react";
 
+import { Menu, Dropdown } from "antd";
+import { Link } from "react-router-dom";
+import { UserOutlined } from "@ant-design/icons";
+
+const menu = () => {
+    return (
+        <Menu>
+            <Menu.Item key="0">
+                <Link to="/profile">Profile</Link>
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item
+                onClick={() => {
+                    function deleteAllCookies() {
+                        var cookies = document.cookie.split(";");
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = cookies[i];
+                            var eqPos = cookie.indexOf("=");
+                            var name =
+                                eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                            document.cookie =
+                                name +
+                                "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                        }
+                    }
+                    deleteAllCookies();
+                    window.location.reload(true);
+                }}
+                key="3"
+            >
+                <Link to="/">Logout</Link>
+            </Menu.Item>
+        </Menu>
+    );
+};
+
 export const Header = () => {
-    return <h1>do something</h1>;
+    return (
+        <div className="header_dashboar">
+            <Dropdown overlay={menu} trigger={["click"]}>
+                <a
+                    className="ant-dropdown-link"
+                    onClick={(e) => e.preventDefault()}
+                >
+                    Profile | <UserOutlined />
+                </a>
+            </Dropdown>
+        </div>
+    );
 };

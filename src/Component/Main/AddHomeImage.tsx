@@ -7,6 +7,8 @@ import { API_URL } from "../../../config";
 export const AddHomeImage = () => {
     const [file, setFile] = React.useState({});
 
+    const [form] = Form.useForm();
+
     const [inputValue, setInputValue] = React.useState(null);
 
     function _handleImageChange(e) {
@@ -18,15 +20,17 @@ export const AddHomeImage = () => {
         reader.readAsDataURL(file);
     }
 
-    const onsubmit = value => {
+    const onsubmit = (value) => {
         value.Image = file;
         console.log(value);
         axios
             .post(`${API_URL}/homes`, value)
-            .then(res => {
-                console.log(res);
+            .then((res) => {
+                alert("success");
+                form.resetFields();
+                window.location.reload(true);
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log(err);
             });
     };
@@ -48,20 +52,20 @@ export const AddHomeImage = () => {
                 <Input
                     className="input-file"
                     id="myfile"
-                    onChange={e => {
+                    onChange={(e) => {
                         _handleImageChange(e);
                         const formData = new FormData();
                         formData.append("files", e.target.files[0]);
                         axios
                             .post(`${API_URL}/upload`, formData, {
                                 headers: {
-                                    "Content-Type": "multipart/form-data"
-                                }
+                                    "Content-Type": "multipart/form-data",
+                                },
                             })
-                            .then(res => {
+                            .then((res) => {
                                 setFile(res.data[0]);
                             })
-                            .catch(err => {
+                            .catch((err) => {
                                 console.log(err);
                             });
                     }}

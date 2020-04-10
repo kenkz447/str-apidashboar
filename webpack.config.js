@@ -6,33 +6,33 @@ const ManifestPlugin = require("webpack-manifest-plugin");
 module.exports = {
     mode: "development",
     entry: {
-        typescript: "./src/index.tsx"
+        typescript: "./src/index.tsx",
     },
     devtool: "inline-source-map",
     devServer: {
         historyApiFallback: true,
         hot: true,
-        contentBase: "./dist"
+        contentBase: "./dist",
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js"],
         alias: {
             _Style: path.resolve(__dirname, "./src/style/"),
-            _Home: path.resolve(__dirname, "./src/component/Home")
-        }
+            _Home: path.resolve(__dirname, "./src/component/Home"),
+        },
     },
     devServer: {},
     plugins: [
         new ManifestPlugin(),
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            title: "Caching"
-        })
+            title: "Caching",
+        }),
     ],
     output: {
         filename: "[name].[contenthash].js",
         path: path.resolve(__dirname, "dist"),
-        publicPath: "/"
+        publicPath: "/",
     },
     optimization: {
         runtimeChunk: "single",
@@ -41,10 +41,10 @@ module.exports = {
                 vendor: {
                     test: /[\\/]node_modules[\\/]/,
                     name: "vendors",
-                    chunks: "all"
-                }
-            }
-        }
+                    chunks: "all",
+                },
+            },
+        },
     },
     module: {
         rules: [
@@ -54,17 +54,17 @@ module.exports = {
                     // Creates `style` nodes from JS strings
                     "style-loader",
                     "css-loader",
-                    "sass-loader"
-                ]
+                    "sass-loader",
+                ],
             },
             {
                 test: /\.tsx?$/,
                 use: "ts-loader",
-                exclude: "/node_modules/"
+                exclude: "/node_modules/",
             },
             {
                 test: /\.css$/,
-                use: ["style-loader", "css-loader"]
+                use: ["style-loader", "css-loader"],
             },
             {
                 test: /\.(png|svg|jpg|gif)$/,
@@ -72,10 +72,10 @@ module.exports = {
                     {
                         loader: "file-loader",
                         options: {
-                            esModule: false
-                        }
-                    }
-                ]
+                            esModule: false,
+                        },
+                    },
+                ],
             },
             {
                 test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
@@ -85,11 +85,11 @@ module.exports = {
                         options: {
                             name: "[name].[ext]",
                             outputPath: "fonts/",
-                            publicPath: "../fonts"
-                        }
-                    }
-                ]
-            }
-        ]
-    }
+                            publicPath: "../fonts",
+                        },
+                    },
+                ],
+            },
+        ],
+    },
 };

@@ -8,7 +8,11 @@ const { TextArea } = Input;
 export const FormAddProject = () => {
     const [file, setFile] = React.useState({});
 
+    const [form] = Form.useForm();
+
     const [inputValue, setInputValue] = React.useState(null);
+
+    const [resetInputFile, setResetInputFile] = React.useState("");
 
     function _handleImageChange(e) {
         var file = e.target.files[0];
@@ -19,26 +23,28 @@ export const FormAddProject = () => {
         reader.readAsDataURL(file);
     }
 
-    const onsubmit = value => {
-        value.Image = file;
-        console.log(value);
+    const onsubmit = (valueForm) => {
+        valueForm.Image = file;
+        console.log(valueForm);
         axios
-            .post(`${API_URL}/projects`, value)
-            .then(res => {
-                console.log(res);
+            .post(`${API_URL}/projects`, valueForm)
+            .then((res) => {
+                alert("success");
+                form.resetFields();
+                window.location.reload(true);
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log(err);
             });
     };
 
     return (
-        <Form className="form-add-project" onFinish={onsubmit}>
+        <Form form={form} className="form-add-project" onFinish={onsubmit}>
             <Form.Item
                 label="Title"
                 name="Title"
                 rules={[
-                    { required: true, message: "Please input your Title!" }
+                    { required: true, message: "Please input your Title!" },
                 ]}
             >
                 <Input />
@@ -49,8 +55,8 @@ export const FormAddProject = () => {
                 rules={[
                     {
                         required: true,
-                        message: "Please input your Description!"
-                    }
+                        message: "Please input your Description!",
+                    },
                 ]}
             >
                 <TextArea />
@@ -59,7 +65,7 @@ export const FormAddProject = () => {
                 label="Client"
                 name="Client"
                 rules={[
-                    { required: true, message: "Please input your Client!" }
+                    { required: true, message: "Please input your Client!" },
                 ]}
             >
                 <Input />
@@ -68,7 +74,7 @@ export const FormAddProject = () => {
                 label="Share"
                 name="Share"
                 rules={[
-                    { required: true, message: "Please input your Share!" }
+                    { required: true, message: "Please input your Share!" },
                 ]}
             >
                 <Input />
@@ -81,24 +87,25 @@ export const FormAddProject = () => {
                 <Input
                     className="input-file"
                     id="myfile"
-                    onChange={e => {
+                    onChange={(e) => {
                         _handleImageChange(e);
                         const formData = new FormData();
                         formData.append("files", e.target.files[0]);
                         axios
                             .post(`${API_URL}/upload`, formData, {
                                 headers: {
-                                    "Content-Type": "multipart/form-data"
-                                }
+                                    "Content-Type": "multipart/form-data",
+                                },
                             })
-                            .then(res => {
+                            .then((res) => {
                                 setFile(res.data[0]);
                             })
-                            .catch(err => {
+                            .catch((err) => {
                                 console.log(err);
                             });
                     }}
                     type="file"
+                    value={resetInputFile}
                 />
                 {inputValue && <img className="preview" src={inputValue} />}
             </div>

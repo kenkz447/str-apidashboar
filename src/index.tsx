@@ -5,6 +5,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { App } from "./Layout/Layout";
+import { LoginPage } from "./Component/LoginPage";
 
 function createElementRootApp() {
     const element = document.createElement("div");

@@ -49,9 +49,37 @@ body {
                 }
             }
             .ant-layout-content {
-                background: #ffffff;
+                background: #f2f2f2;
                 padding: 15px 50px;
             }
         }
+    }
+}
+
+.login-row {
+    min-height: inherit;
+    .col-login {
+        background: #fafafa;
+        padding: 30px;
+        z-index: 999;
+        border-radius: 10px;
+        box-shadow: 1px 0px 4px #dedede;
+        .form-login {
+            padding-right: 40px;
+            padding-top: 30px;
+        }
+    }
+}
+
+.header_dashboar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    a {
+        color: #333333;
+    }
+    .avata_profile {
+        width: 100%;
+        height: auto;
     }
 }

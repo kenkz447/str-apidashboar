@@ -3,9 +3,8 @@ import "./style.scss";
 import { Form, Input, Button } from "antd";
 import axios from "axios";
 import { API_URL } from "../../../config";
-const { TextArea } = Input;
 
-export const EditProject = (match) => {
+export const EditHomeImage = (match) => {
     const [file, setFile] = React.useState({});
 
     const [inputValue, setInputValue] = React.useState(null);
@@ -14,10 +13,7 @@ export const EditProject = (match) => {
         {
             id: 43,
             image: "",
-            Title: "",
-            Description: "",
-            Client: "",
-            Share: "",
+            link: "",
         },
     ]);
 
@@ -26,7 +22,7 @@ export const EditProject = (match) => {
     const id = Number(getID.substr(1, 99));
 
     React.useEffect(() => {
-        fetch(`${API_URL}/projects?id_in= ${id}`)
+        fetch(`${API_URL}/homes?id_in= ${id}`)
             .then((res) => res.json())
             .then(
                 (result) => {
@@ -36,10 +32,6 @@ export const EditProject = (match) => {
                             id: Number(item.id),
                             image: item.Image.url,
                             link: item.link,
-                            Title: item.Title,
-                            Description: item.Description,
-                            Client: item.Client,
-                            Share: item.Share,
                         });
                     });
                     setApi(newResult);
@@ -58,13 +50,12 @@ export const EditProject = (match) => {
         };
         reader.readAsDataURL(file);
     }
-    console.log(id);
 
     const onsubmit = (value) => {
         value.Image = file;
         console.log(value);
         axios
-            .put(`${API_URL}/projects/${id}`, value)
+            .put(`${API_URL}/homes/${id}`, value)
             .then((res) => {
                 alert("success");
             })
@@ -76,59 +67,22 @@ export const EditProject = (match) => {
     return (
         <Form className="form-add-project" onFinish={onsubmit}>
             <Form.Item
-                label="Title"
-                name="Title"
-                rules={[
-                    { required: true, message: "Please input your Title!" },
-                ]}
+                label="link"
+                name="link"
+                rules={[{ required: true, message: "Please input your link!" }]}
             >
-                <Input key={api[0]?.Title} defaultValue={api[0]?.Title} />
+                <Input />
             </Form.Item>
-            <Form.Item
-                label="Description"
-                name="Description"
-                rules={[
-                    {
-                        required: true,
-                        message: "Please input your Description!",
-                    },
-                ]}
-            >
-                <Input.TextArea
-                    key={api[0]?.Title}
-                    defaultValue={api[0]?.Title}
-                >
-                    {"ádá"}
-                </Input.TextArea>
-            </Form.Item>
-            <Form.Item
-                label="Client"
-                name="Client"
-                rules={[
-                    { required: true, message: "Please input your Client!" },
-                ]}
-            >
-                <Input key={api[0]?.Client} defaultValue={api[0]?.Client} />
-            </Form.Item>
-            <Form.Item
-                label="Share"
-                name="Share"
-                rules={[
-                    { required: true, message: "Please input your Share!" },
-                ]}
-            >
-                <Input key={api[0]?.Share} defaultValue={api[0]?.Share} />
-            </Form.Item>
-
             <div className="input-file-container">
                 <label className="button-select-file" id="myfile">
-                    Edit
+                    Add Image
                 </label>
                 <Input
                     className="input-file"
                     id="myfile"
                     onChange={(e) => {
                         _handleImageChange(e);
+                        console.log(e.target.files[0]);
                         const formData = new FormData();
                         formData.append("files", e.target.files[0]);
                         axios
@@ -146,7 +100,6 @@ export const EditProject = (match) => {
                     }}
                     type="file"
                 />
-
                 {inputValue ? (
                     <img className="preview" src={inputValue} />
                 ) : (

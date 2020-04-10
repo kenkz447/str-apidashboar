@@ -62,3 +62,19 @@
         }
     }
 }
+
+.btn-edit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 75px;
+    height: 32px;
+    background: #1890ff;
+    color: #ffffff;
+    float: left;
+    margin-right: 10px;
+    border-radius: 2px;
+    &:hover{
+        color: #ffffff;  
+    }
+}
