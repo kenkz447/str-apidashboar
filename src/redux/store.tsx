@@ -28,14 +28,6 @@ const Projectreducer = (state: Item[] = [], action: ProjectReducer) => {
             return (state = action.states);
         case "ADD":
             return [...state, action.item];
-        case "UPDATE":
-            const UpdatingTodo = state.find((o) => o.id === action.item.id);
-            if (!UpdatingTodo) {
-                return state;
-            }
-            UpdatingTodo.image = action.item.image;
-            UpdatingTodo.title = action.item.title;
-            return [...state];
         case "DELETE":
             return state.filter((o) => o.id !== action.item.id);
         default:
@@ -53,25 +45,6 @@ const loggerMiddleware = (store) => {
             return next(action);
         };
     };
-};
-
-const postItemMiddleware = (store) => (next) => (action) => {
-    if (action.type !== "ADD") {
-        return next(action);
-    }
-    axios
-        .post("http://localhost:3000/api/todos", action.todo)
-        .then((o) => {
-            if (o.statusText == "OK") {
-                next({
-                    ...action,
-                    todo: o.data,
-                });
-            }
-        })
-        .catch(function (error) {
-            alert(error);
-        });
 };
 
 const deleteItemMiddleware = (store) => (next) => (action) => {
@@ -97,38 +70,13 @@ const deleteItemMiddleware = (store) => (next) => (action) => {
         });
 };
 
-const updateItemMiddleware = (store) => (next) => (action) => {
-    if (action.type !== "UPDATE") {
-        return next(action);
-    }
-
-    axios
-        .put("http://localhost:3000/api/todos", action.todo)
-        .then((o) => {
-            if (o.statusText == "OK") {
-                next({
-                    ...action,
-                    todo: action.todo,
-                });
-            }
-        })
-        .catch(function (error) {
-            alert("UPDATE FAILED!");
-        });
-};
-
 const reducer = combineReducers({
     items: Projectreducer,
 });
 
 export const store = createStore(
     reducer,
-    applyMiddleware(
-        loggerMiddleware,
-        postItemMiddleware,
-        deleteItemMiddleware,
-        updateItemMiddleware
-    )
+    applyMiddleware(loggerMiddleware, deleteItemMiddleware)
 );
 
 export const getApi = (states: Item[]) => ({
@@ -136,19 +84,7 @@ export const getApi = (states: Item[]) => ({
     states,
 });
 
-export const addItem = (item: Item): ProjectReducer => ({
-    type: "ADD",
-    item: item,
-});
-
 export const deleteItem = (item: Item): ProjectReducer => ({
     type: "DELETE",
     item: item,
 });
-
-export const UpdateItem = (states): ProjectReducer => ({
-    type: "UPDATE",
-    states,
-});
-
-/* ====================== Home =========================== */
