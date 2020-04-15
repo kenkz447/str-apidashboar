@@ -1,8 +1,10 @@
 import * as React from "react";
 import "../style.scss";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, notification } from "antd";
 import axios from "axios";
-import { API_URL } from "../../../../config";
+import { API_URL, getCookie } from "../../../../config";
+import { CheckCircleOutlined } from "@ant-design/icons";
+import { useHistory } from "react-router-dom";
 const { TextArea } = Input;
 
 export const FormAddProject = () => {
@@ -15,6 +17,8 @@ export const FormAddProject = () => {
 
     const [resetInputFile, setResetInputFile] = React.useState("");
 
+    let history = useHistory();
+
     function _handleImageChange(e) {
         var file = e.target.files[0];
         var reader = new FileReader();
@@ -26,16 +30,26 @@ export const FormAddProject = () => {
 
     const onsubmit = (valueForm) => {
         valueForm.Image = file;
-        console.log(valueForm);
         axios
-            .post(`${API_URL}/projects`, valueForm)
-            .then((res) => {
-                alert("success");
-                form.resetFields();
-                window.location.reload(true);
+            .post(`${API_URL}/projects`, valueForm, {
+                headers: {
+                    Authorization: `Bearer ${getCookie()}`,
+                },
             })
-            .catch((err) => {
-                console.log(err);
+            .then((res) => {
+                notification.open({
+                    message: "success",
+                    icon: (
+                        <CheckCircleOutlined
+                            style={{
+                                color: "#28a745",
+                                fontSize: "13px",
+                            }}
+                        />
+                    ),
+                    duration: 1.5,
+                });
+                history.push("/project");
             });
     };
 
@@ -96,13 +110,23 @@ export const FormAddProject = () => {
                             .post(`${API_URL}/upload`, formData, {
                                 headers: {
                                     "Content-Type": "multipart/form-data",
+                                    Authorization: `Bearer ${getCookie()}`,
                                 },
                             })
                             .then((res) => {
+                                notification.open({
+                                    message: "upload success",
+                                    icon: (
+                                        <CheckCircleOutlined
+                                            style={{
+                                                color: "#28a745",
+                                                fontSize: "13px",
+                                            }}
+                                        />
+                                    ),
+                                    duration: 1.5,
+                                });
                                 setFile(res.data[0]);
-                            })
-                            .catch((err) => {
-                                console.log(err);
                             });
                     }}
                     type="file"

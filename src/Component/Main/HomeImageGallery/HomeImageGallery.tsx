@@ -1,12 +1,16 @@
 import * as React from "react";
 import { API_URL } from "../../../../config";
-import { Button, Table as TableANTD, Pagination } from "antd";
+import { Button, Table as TableANTD, Pagination, Modal } from "antd";
 import { connect } from "react-redux";
 import { deleteItem, getApi, Item } from "../../../redux/storeHome";
 import { Link } from "react-router-dom";
 import "../style.scss";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-
+import {
+    EditOutlined,
+    DeleteOutlined,
+    ExclamationCircleOutlined,
+} from "@ant-design/icons";
+const { confirm } = Modal;
 var moment = require("moment");
 
 interface TableListProps {
@@ -151,7 +155,16 @@ class HomeImageGallery extends React.Component<TableListProps, IState> {
                                         size="middle"
                                         shape="circle"
                                         onClick={() => {
-                                            Deleteitem(action);
+                                            confirm({
+                                                title: "Are you sure ?",
+                                                icon: (
+                                                    <ExclamationCircleOutlined />
+                                                ),
+                                                onOk() {
+                                                    Deleteitem(action);
+                                                },
+                                                onCancel() {},
+                                            });
                                         }}
                                     />
                                 </>

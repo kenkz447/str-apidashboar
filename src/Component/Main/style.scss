@@ -77,3 +77,27 @@
     justify-content: flex-end;
     align-items: center;
 }
+
+.ant-notification {
+    width: fit-content;
+    font-size: 18px;
+    &-notice {
+        padding: 5px 10px;
+        &-close {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        &-message {
+            font-size: 10px;
+        }
+    }
+}
+.ant-notification-notice-with-icon .ant-notification-notice-message {
+    font-size: 14px;
+    margin-left: 37px;
+    margin-bottom: 0;
+    margin-right: 10px;
+}
+.ant-notification-notice-icon {
+    font-size: 25px;
+}

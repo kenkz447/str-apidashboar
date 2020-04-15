@@ -43,20 +43,7 @@ body {
     }
 }
 
-.login-row {
-    min-height: inherit;
-    .col-login {
-        background: #fafafa;
-        padding: 30px;
-        z-index: 999;
-        border-radius: 10px;
-        box-shadow: 1px 0px 4px #dedede;
-        .form-login {
-            padding-right: 40px;
-            padding-top: 30px;
-        }
-    }
-}
+
 
 .header_dashboar {
     display: flex;

@@ -4,8 +4,14 @@ import { API_URL } from "../../../../config";
 import "../style.scss";
 import { Item, deleteItem, getApi } from "../../../redux/store";
 import { connect } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
+import {
+    EditOutlined,
+    DeleteOutlined,
+    ExclamationCircleOutlined,
+} from "@ant-design/icons";
+import { Modal, notification } from "antd";
+const { confirm } = Modal;
 
 var moment = require("moment");
 
@@ -99,7 +105,16 @@ class ListProject extends React.Component<TableListProps> {
                                         size="middle"
                                         shape="circle"
                                         onClick={() => {
-                                            Deleteitem(action);
+                                            confirm({
+                                                title: "Are you sure ?",
+                                                icon: (
+                                                    <ExclamationCircleOutlined />
+                                                ),
+                                                onOk() {
+                                                    Deleteitem(action);
+                                                },
+                                                onCancel() {},
+                                            });
                                         }}
                                     />
                                 </>

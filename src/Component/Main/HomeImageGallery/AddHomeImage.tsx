@@ -1,11 +1,15 @@
 import * as React from "react";
 import "../style.scss";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, notification } from "antd";
 import axios from "axios";
-import { API_URL } from "../../../../config";
+import { API_URL, getCookie } from "../../../../config";
+import { useHistory } from "react-router-dom";
+import { CheckCircleOutlined } from "@ant-design/icons";
 
 export const AddHomeImage = () => {
     document.title = "Add Home";
+
+    const history = useHistory();
 
     const [file, setFile] = React.useState({});
 
@@ -24,32 +28,42 @@ export const AddHomeImage = () => {
 
     const onsubmit = (value) => {
         value.Image = file;
-        console.log(value);
         axios
-            .post(`${API_URL}/homes`, value)
-            .then((res) => {
-                alert("success");
-                form.resetFields();
-                window.location.reload(true);
+            .post(`${API_URL}/homes`, value, {
+                headers: {
+                    Authorization: `Bearer ${getCookie()}`,
+                },
             })
-            .catch((err) => {
-                console.log(err);
+            .then((res) => {
+                history.push("/home");
+                notification.open({
+                    message: "success",
+                    icon: (
+                        <CheckCircleOutlined
+                            style={{
+                                color: "#28a745",
+                                fontSize: "13px",
+                            }}
+                        />
+                    ),
+                    duration: 1.5,
+                });
+                form.resetFields();
             });
     };
 
     return (
-        <Form className="form-add-project" onFinish={onsubmit}>
+        <Form form={form} className="form-add-project" onFinish={onsubmit}>
             <Form.Item
-                label="link"
+                label="Link"
                 name="link"
                 rules={[{ required: true, message: "Please input your link!" }]}
             >
                 <Input />
             </Form.Item>
-
             <div className="input-file-container">
                 <label className="button-select-file" id="myfile">
-                    Add Image
+                    Upload image
                 </label>
                 <Input
                     className="input-file"
@@ -62,20 +76,34 @@ export const AddHomeImage = () => {
                             .post(`${API_URL}/upload`, formData, {
                                 headers: {
                                     "Content-Type": "multipart/form-data",
+                                    Authorization: `Bearer ${getCookie()}`,
                                 },
                             })
                             .then((res) => {
+                                notification.open({
+                                    message: "upload success",
+                                    icon: (
+                                        <CheckCircleOutlined
+                                            style={{
+                                                color: "#28a745",
+                                                fontSize: "13px",
+                                            }}
+                                        />
+                                    ),
+                                    duration: 1.5,
+                                });
                                 setFile(res.data[0]);
                             })
                             .catch((err) => {
-                                console.log(err);
+                                notification["error"]({
+                                    message: "Upload faild",
+                                });
                             });
                     }}
                     type="file"
                 />
                 {inputValue && <img className="preview" src={inputValue} />}
             </div>
-
             <Form.Item>
                 <Button type="primary" htmlType="submit">
                     Submit

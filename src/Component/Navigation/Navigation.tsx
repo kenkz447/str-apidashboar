@@ -6,6 +6,7 @@ const { SubMenu } = Menu;
 
 export const Navigation = () => {
     const [defaultOpenKeys, setDefaultOpenKeys] = React.useState("");
+    const [key, setKey] = React.useState("");
     const location = useLocation().pathname;
     const removeFirstSlash = location.substr(1, 999);
 
@@ -17,7 +18,8 @@ export const Navigation = () => {
         } else {
             setDefaultOpenKeys(removeFirstSlash);
         }
-    }, []);
+        setKey(document.title);
+    });
 
     const data = [
         {
@@ -41,14 +43,14 @@ export const Navigation = () => {
             NavLink: [{ key: "About", link: "/about" }],
         },
     ];
-
+    console.log(key);
     return (
         <Menu
             style={{ width: "100%" }}
-            defaultSelectedKeys={[document.title]}
+            defaultSelectedKeys={[key]}
             defaultOpenKeys={[defaultOpenKeys]}
             mode="inline"
-            key={defaultOpenKeys}
+            key={key}
         >
             {data.map((items) => {
                 if (items.SubMenuKey) {

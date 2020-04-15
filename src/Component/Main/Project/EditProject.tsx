@@ -3,16 +3,10 @@ import "../style.scss";
 import { Form, Input, Button, Modal, notification } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import axios from "axios";
-import { API_URL } from "../../../../config";
+import { API_URL, getCookie } from "../../../../config";
+import { CheckCircleOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 const { confirm } = Modal;
-
-const openNotificationWithIcon = (type) => {
-    notification[type]({
-        message: "Edit success",
-        duration: 2,
-    });
-};
 
 export const EditProject = (match) => {
     const [file, setFile] = React.useState({});
@@ -114,17 +108,23 @@ export const EditProject = (match) => {
 
     function showConfirm(value) {
         confirm({
-            title: "Do you want to delete these items?",
+            title: "Are you sure ?",
             icon: <ExclamationCircleOutlined />,
-            content:
-                "When clicked the OK button, this dialog will be closed after 0.5 second",
             onOk() {
                 value.Image = file;
-                console.log(value);
-                axios.put(`${API_URL}/projects/${id}`, value).then((res) => {
-                    history.push("/project");
-                    openNotificationWithIcon("success");
-                });
+                axios
+                    .put(`${API_URL}/projects/${id}`, value, {
+                        headers: {
+                            Authorization: `Bearer ${getCookie()}`,
+                        },
+                    })
+                    .then((res) => {
+                        history.push("/project");
+                        notification["success"]({
+                            message: "Edit success",
+                            duration: 2,
+                        });
+                    });
                 return new Promise((resolve, reject) => {
                     setTimeout(Math.random() > 0.5 ? resolve : reject, 150);
                 }).catch(() => console.log("Oops errors!"));
@@ -194,13 +194,11 @@ export const EditProject = (match) => {
                             .post(`${API_URL}/upload`, formData, {
                                 headers: {
                                     "Content-Type": "multipart/form-data",
+                                    Authorization: `Bearer ${getCookie()}`,
                                 },
                             })
                             .then((res) => {
                                 setFile(res.data[0]);
-                            })
-                            .catch((err) => {
-                                console.log(err);
                             });
                     }}
                     type="file"

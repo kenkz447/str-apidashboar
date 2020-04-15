@@ -1,7 +1,10 @@
+import "./style.scss";
+
 import * as React from "react";
 import { Form, Input, Button, Row, Col, notification } from "antd";
 import { API_URL } from "../../../config";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 const layout = {
     labelCol: { span: 8 },
@@ -12,18 +15,20 @@ const tailLayout = {
 };
 
 export const LoginPage = () => {
+    const history = useHistory();
     function onFinish(values) {
         axios
-            .post("http://localhost:1337/auth/local", {
+            .post(`${API_URL}/auth/local`, {
                 identifier: values.identifier,
                 password: values.password,
             })
             .then((response) => {
-                document.cookie = response.data.jwt;
+                document.cookie = "auth=" + response.data.jwt;
                 notification["success"]({
                     message: "Logged in successfully",
+                    duration: 500,
                 });
-                window.location.reload(true);
+                history.push("/home");
             })
             .catch(() => {
                 notification["error"]({
@@ -33,7 +38,15 @@ export const LoginPage = () => {
             });
     }
     return (
-        <Row className="login-row" align="middle" justify="center">
+        <Row
+            style={{
+                backgroundImage:
+                    "url(" + require("../../image/login.jpg") + ")",
+            }}
+            className="login-row"
+            align="middle"
+            justify="center"
+        >
             <Col className="col-login" span={8}>
                 <Form
                     className="form-login"

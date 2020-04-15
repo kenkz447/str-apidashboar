@@ -7,7 +7,6 @@ const { Sider, Header, Footer, Content } = LayoutAntd;
 import { Provider } from "react-redux";
 import { Routes } from "../Component/Routes/Routes";
 import { ConnectedRouter } from "connected-react-router";
-import { Link } from "react-router-dom";
 import configureStore, { history } from "../redux/configureStore";
 
 interface AppProps {}
@@ -38,7 +37,10 @@ export const Layout = (props: AppProps) => {
                             <Routes />
                         </Content>
                         <Footer>
-                            <p>copyright © Loc</p>
+                            <p>
+                                © 2017 Piroll. All rights reserved. Designed by
+                                robirurk.
+                            </p>
                         </Footer>
                     </LayoutAntd>
                 </LayoutAntd>

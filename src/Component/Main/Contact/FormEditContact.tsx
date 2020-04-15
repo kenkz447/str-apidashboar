@@ -1,9 +1,14 @@
 import * as React from "react";
 import "../style.scss";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, Modal, notification } from "antd";
 import axios from "axios";
-import { API_URL } from "../../../../config";
-const { TextArea } = Input;
+import { API_URL, getCookie } from "../../../../config";
+import {
+    CheckCircleOutlined,
+    ExclamationCircleOutlined,
+} from "@ant-design/icons";
+
+const { confirm } = Modal;
 
 export const FormEditContact = () => {
     document.title = "Contact";
@@ -11,14 +16,33 @@ export const FormEditContact = () => {
     const [api, setApi] = React.useState([]);
 
     const onsubmit = (value) => {
-        axios
-            .put(`${API_URL}/contact`, value)
-            .then((res) => {
-                alert("success");
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        confirm({
+            title: "Are you sure ?",
+            icon: <ExclamationCircleOutlined />,
+            onOk() {
+                axios
+                    .put(`${API_URL}/contact`, value, {
+                        headers: {
+                            Authorization: `Bearer ${getCookie()}`,
+                        },
+                    })
+                    .then((res) => {
+                        notification.open({
+                            message: "Edit success",
+                            icon: (
+                                <CheckCircleOutlined
+                                    style={{
+                                        color: "#28a745",
+                                        fontSize: "13px",
+                                    }}
+                                />
+                            ),
+                            duration: 1.5,
+                        });
+                    });
+            },
+            onCancel() {},
+        });
     };
 
     React.useEffect(() => {

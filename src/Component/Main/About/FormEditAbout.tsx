@@ -1,8 +1,13 @@
 import * as React from "react";
 import ".././style.scss";
-import { Form, Input, Button, Row, Col } from "antd";
+import { Form, Input, Button, Row, Col, notification, Modal } from "antd";
 import axios from "axios";
-import { API_URL } from "../../../../config";
+import { API_URL, getCookie } from "../../../../config";
+import {
+    CheckCircleOutlined,
+    ExclamationCircleOutlined,
+} from "@ant-design/icons";
+const { confirm } = Modal;
 
 export const FormEditAbout = () => {
     document.title = "About";
@@ -47,14 +52,33 @@ export const FormEditAbout = () => {
         const newFile = [];
         newFile.push(file);
         value.Image = newFile;
-        axios
-            .put(`${API_URL}/about`, value)
-            .then((res) => {
-                alert("success");
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        confirm({
+            title: "Are you sure ?",
+            icon: <ExclamationCircleOutlined />,
+            onOk() {
+                axios
+                    .put(`${API_URL}/about`, value, {
+                        headers: {
+                            Authorization: `Bearer ${getCookie()}`,
+                        },
+                    })
+                    .then((res) => {
+                        notification.open({
+                            message: "Edit success",
+                            icon: (
+                                <CheckCircleOutlined
+                                    style={{
+                                        color: "#28a745",
+                                        fontSize: "13px",
+                                    }}
+                                />
+                            ),
+                            duration: 1.5,
+                        });
+                    });
+            },
+            onCancel() {},
+        });
     };
 
     React.useEffect(() => {
@@ -112,21 +136,28 @@ export const FormEditAbout = () => {
                             id="myfile"
                             onChange={(e) => {
                                 _handleImageChange(e);
-                                console.log(e.target.files[0]);
                                 const formData = new FormData();
                                 formData.append("files", e.target.files[0]);
                                 axios
                                     .post(`${API_URL}/upload`, formData, {
                                         headers: {
-                                            "Content-Type":
-                                                "multipart/form-data",
+                                            Authorization: `Bearer ${getCookie()}`,
                                         },
                                     })
                                     .then((res) => {
+                                        notification.open({
+                                            message: "Upload success",
+                                            icon: (
+                                                <CheckCircleOutlined
+                                                    style={{
+                                                        color: "#28a745",
+                                                        fontSize: "13px",
+                                                    }}
+                                                />
+                                            ),
+                                            duration: 1.5,
+                                        });
                                         setFile(res.data[0]);
-                                    })
-                                    .catch((err) => {
-                                        console.log(err);
                                     });
                             }}
                             type="file"
