@@ -1,15 +1,45 @@
 import * as React from "react";
-import "./style.scss";
+import "../style.scss";
 import { Form, Input, Button } from "antd";
 import axios from "axios";
-import { API_URL } from "../../../config";
+import { API_URL } from "../../../../config";
 
-export const AddHomeImage = () => {
+export const EditHomeImage = (match) => {
     const [file, setFile] = React.useState({});
 
-    const [form] = Form.useForm();
-
     const [inputValue, setInputValue] = React.useState(null);
+
+    const [api, setApi] = React.useState([
+        {
+            id: 43,
+            image: "",
+            link: "",
+        },
+    ]);
+
+    const id = match.match.params.id;
+
+    React.useEffect(() => {
+        fetch(`${API_URL}/homes?id_in= ${id}`)
+            .then((res) => res.json())
+            .then(
+                (result) => {
+                    const newResult = [];
+                    result.map((item) => {
+                        return newResult.push({
+                            id: Number(item.id),
+                            image: item.Image.url,
+                            link: item.link,
+                        });
+                    });
+                    setApi(newResult);
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
+        document.title = "hihi";
+    }, []);
 
     function _handleImageChange(e) {
         var file = e.target.files[0];
@@ -24,11 +54,9 @@ export const AddHomeImage = () => {
         value.Image = file;
         console.log(value);
         axios
-            .post(`${API_URL}/homes`, value)
+            .put(`${API_URL}/homes/${id}`, value)
             .then((res) => {
                 alert("success");
-                form.resetFields();
-                window.location.reload(true);
             })
             .catch((err) => {
                 console.log(err);
@@ -42,9 +70,8 @@ export const AddHomeImage = () => {
                 name="link"
                 rules={[{ required: true, message: "Please input your link!" }]}
             >
-                <Input />
+                <Input key={api[0].link} defaultValue={api[0].link} />
             </Form.Item>
-
             <div className="input-file-container">
                 <label className="button-select-file" id="myfile">
                     Add Image
@@ -54,6 +81,7 @@ export const AddHomeImage = () => {
                     id="myfile"
                     onChange={(e) => {
                         _handleImageChange(e);
+                        console.log(e.target.files[0]);
                         const formData = new FormData();
                         formData.append("files", e.target.files[0]);
                         axios
@@ -71,9 +99,12 @@ export const AddHomeImage = () => {
                     }}
                     type="file"
                 />
-                {inputValue && <img className="preview" src={inputValue} />}
+                {inputValue ? (
+                    <img className="preview" src={inputValue} />
+                ) : (
+                    <img className="preview" src={API_URL + api[0].image} />
+                )}
             </div>
-
             <Form.Item>
                 <Button type="primary" htmlType="submit">
                     Submit

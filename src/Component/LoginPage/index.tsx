@@ -1,6 +1,7 @@
 import * as React from "react";
-import { Form, Input, Button, Checkbox, Row, Col } from "antd";
+import { Form, Input, Button, Row, Col, notification } from "antd";
 import { API_URL } from "../../../config";
+import axios from "axios";
 
 const layout = {
     labelCol: { span: 8 },
@@ -11,37 +12,26 @@ const tailLayout = {
 };
 
 export const LoginPage = () => {
-    const onFinish = (values) => {
-        console.log(values);
-
-        fetch(
-            `${API_URL}/user-logers?username=${values.username}&password=${values.password}`
-        )
-            .then((res) => res.json())
-            .then((result) => {
-                if (result.length > 0) {
-                    alert(
-                        `Hi ${result[0].name} You have successfully logged in`
-                    );
-                    const objectLoger = {
-                        name: result[0].name,
-                        Username: result[0].username,
-                        email: result[0].email,
-                    };
-                    const set_cookie = (name, value) => {
-                        document.cookie = name + "=" + value;
-                    };
-                    set_cookie(
-                        "successfullyLogin",
-                        JSON.stringify(objectLoger)
-                    );
-                    window.location.reload(true);
-                } else {
-                    alert("wrong username or password!!!!");
-                }
+    function onFinish(values) {
+        axios
+            .post("http://localhost:1337/auth/local", {
+                identifier: values.identifier,
+                password: values.password,
+            })
+            .then((response) => {
+                document.cookie = response.data.jwt;
+                notification["success"]({
+                    message: "Logged in successfully",
+                });
+                window.location.reload(true);
+            })
+            .catch(() => {
+                notification["error"]({
+                    message: "Login failed",
+                    description: "Wrong username or password !!!",
+                });
             });
-    };
-
+    }
     return (
         <Row className="login-row" align="middle" justify="center">
             <Col className="col-login" span={8}>
@@ -54,7 +44,7 @@ export const LoginPage = () => {
                 >
                     <Form.Item
                         label="Username"
-                        name="username"
+                        name="identifier"
                         rules={[
                             {
                                 required: true,
@@ -77,15 +67,6 @@ export const LoginPage = () => {
                     >
                         <Input.Password />
                     </Form.Item>
-
-                    <Form.Item
-                        {...tailLayout}
-                        name="remember"
-                        valuePropName="checked"
-                    >
-                        <Checkbox>Remember me</Checkbox>
-                    </Form.Item>
-
                     <Form.Item {...tailLayout}>
                         <Button type="primary" htmlType="submit">
                             Submit

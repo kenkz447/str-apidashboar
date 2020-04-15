@@ -1,10 +1,13 @@
+import "./style.scss";
+
 import * as React from "react";
-
-import { Menu, Dropdown } from "antd";
+import { Menu, Dropdown, Input } from "antd";
 import { Link } from "react-router-dom";
-import { UserOutlined } from "@ant-design/icons";
+import { UserOutlined, GlobalOutlined, BellOutlined } from "@ant-design/icons";
 
-const menu = () => {
+const { Search } = Input;
+
+const profile = () => {
     return (
         <Menu>
             <Menu.Item key="0">
@@ -36,15 +39,63 @@ const menu = () => {
     );
 };
 
+const language = () => {
+    return (
+        <Menu>
+            <Menu.Item key="0">
+                <Link to="/profile">VIET NAM</Link>
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item key="3">
+                <Link to="/">ENGLISH</Link>
+            </Menu.Item>
+        </Menu>
+    );
+};
+
 export const Header = () => {
     return (
         <div className="header_dashboar">
-            <Dropdown overlay={menu} trigger={["click"]}>
+            <Search
+                placeholder="Search here !!!"
+                onSearch={(value) => console.log(value)}
+                style={{ width: 160, height: 27, lineHeight: "18px" }}
+            />
+            <Dropdown
+                className="dropdown-header"
+                overlay={<span></span>}
+                trigger={["click"]}
+            >
+                <span
+                    className="ant-dropdown-link"
+                    onClick={(e) => e.preventDefault()}
+                >
+                    <BellOutlined style={{ fontSize: "16px" }} />
+                </span>
+            </Dropdown>
+            <Dropdown
+                className="dropdown-header"
+                overlay={profile}
+                trigger={["click"]}
+            >
+                <span
+                    className="ant-dropdown-link"
+                    onClick={(e) => e.preventDefault()}
+                >
+                    <UserOutlined style={{ fontSize: "16px" }} />
+                    <span className="profile-dropdowni-title">Profile</span>
+                </span>
+            </Dropdown>
+            <Dropdown
+                className="dropdown-header"
+                overlay={language}
+                trigger={["click"]}
+            >
                 <a
                     className="ant-dropdown-link"
                     onClick={(e) => e.preventDefault()}
                 >
-                    Profile | <UserOutlined />
+                    <GlobalOutlined style={{ fontSize: "16px" }} />
                 </a>
             </Dropdown>
         </div>

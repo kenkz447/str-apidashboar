@@ -1,14 +1,16 @@
 import * as React from "react";
-import "./style.scss";
+import ".././style.scss";
 import { Form, Input, Button, Row, Col } from "antd";
 import axios from "axios";
-import { API_URL } from "../../../config";
-const { TextArea } = Input;
+import { API_URL } from "../../../../config";
 
 export const FormEditAbout = () => {
+    document.title = "About";
     const [file, setFile] = React.useState({});
 
-    const [inputValue, setInputValue] = React.useState(null);
+    const [inputValue, setInputValues] = React.useState(null);
+
+    const [defaulValues, setDefaulVales] = React.useState([]);
 
     const [api, setApi] = React.useState({
         id: "",
@@ -16,29 +18,27 @@ export const FormEditAbout = () => {
         Description: "",
         created_at: "",
         updated_at: "",
-        Image: [
-            {
-                id: "76",
-                name: "",
-                hash: "",
-                sha256: "",
-                ext: "",
-                mime: "",
-                size: "",
-                url: "",
-                provider: "",
-                provider_metadata: null,
-                created_at: "",
-                updated_at: "",
-            },
-        ],
+        Image: {
+            id: "",
+            name: "",
+            hash: "",
+            sha256: "",
+            ext: "",
+            mime: "",
+            size: "",
+            url: "",
+            provider: "",
+            provider_metadata: null,
+            created_at: "",
+            updated_at: "",
+        },
     });
 
     function _handleImageChange(e) {
         var file = e.target.files[0];
         var reader = new FileReader();
         reader.onloadend = () => {
-            setInputValue(reader.result);
+            setInputValues(reader.result);
         };
         reader.readAsDataURL(file);
     }
@@ -47,9 +47,8 @@ export const FormEditAbout = () => {
         const newFile = [];
         newFile.push(file);
         value.Image = newFile;
-        console.log(value);
         axios
-            .put(`${API_URL}/about-info-project`, value)
+            .put(`${API_URL}/about`, value)
             .then((res) => {
                 alert("success");
             })
@@ -59,10 +58,28 @@ export const FormEditAbout = () => {
     };
 
     React.useEffect(() => {
-        fetch(`${API_URL}/about-info-project`)
+        fetch(`${API_URL}/about`)
             .then((res) => res.json())
             .then(
                 (result) => {
+                    const newResult = [];
+                    newResult.push(
+                        {
+                            touched: true,
+                            validating: false,
+                            errors: [],
+                            name: ["Title"],
+                            value: result.Title,
+                        },
+                        {
+                            touched: true,
+                            validating: false,
+                            errors: [],
+                            name: ["Description"],
+                            value: result.Description,
+                        }
+                    );
+                    setDefaulVales(newResult);
                     setApi(result);
                 },
                 (error) => {
@@ -75,19 +92,20 @@ export const FormEditAbout = () => {
         <Row>
             <Col span={12}>
                 <h2>{api.Title}</h2>
-                <Form className="form-add-project" onFinish={onsubmit}>
+                <Form
+                    fields={defaulValues}
+                    className="form-add-project"
+                    onFinish={onsubmit}
+                >
                     <Form.Item label="Title" name="Title">
-                        <Input key={api.Title} defaultValue={api.Title} />
+                        <Input />
                     </Form.Item>
                     <Form.Item label="Description" name="Description">
-                        <Input
-                            key={api.Description}
-                            defaultValue={api.Description}
-                        />
+                        <Input />
                     </Form.Item>
                     <div className="input-file-container">
                         <label className="button-select-file" id="myfile">
-                            Add Image
+                            Upload Image
                         </label>
                         <Input
                             className="input-file"
@@ -118,7 +136,7 @@ export const FormEditAbout = () => {
                         ) : (
                             <img
                                 className="preview"
-                                src={API_URL + api.Image[0].url}
+                                src={API_URL + api.Image.url}
                             />
                         )}
                     </div>

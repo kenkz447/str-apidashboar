@@ -3,19 +3,16 @@ import "./Style/style.scss";
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { App } from "./App";
 
-import { App } from "./Layout/Layout";
-import { LoginPage } from "./Component/LoginPage";
-
-function createElementRootApp() {
+function createElementRootApp(id) {
     const element = document.createElement("div");
-    element.setAttribute("id", "root");
+    element.setAttribute("id", id);
     return element;
 }
-
-export const render = () => {
-    document.body.appendChild(createElementRootApp());
-    ReactDOM.render(<App />, document.getElementById("root"));
+export const render = (element) => {
+    document.body.appendChild(createElementRootApp(element));
+    ReactDOM.render(<App />, document.getElementById(element));
 };
 
-render();
+render("root");

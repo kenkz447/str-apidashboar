@@ -1,13 +1,22 @@
 import * as React from "react";
-import "./style.scss";
-import { Form, Input, Button } from "antd";
+import "../style.scss";
+import { Form, Input, Button, Modal, notification } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 import axios from "axios";
-import { API_URL } from "../../../config";
-const { TextArea } = Input;
+import { API_URL } from "../../../../config";
+import { useHistory } from "react-router-dom";
+const { confirm } = Modal;
+
+const openNotificationWithIcon = (type) => {
+    notification[type]({
+        message: "Edit success",
+        duration: 2,
+    });
+};
 
 export const EditProject = (match) => {
     const [file, setFile] = React.useState({});
-
+    let history = useHistory();
     const [inputValue, setInputValue] = React.useState(null);
 
     const [api, setApi] = React.useState([
@@ -21,9 +30,19 @@ export const EditProject = (match) => {
         },
     ]);
 
-    const getID = match.match.params.id;
+    const [defaultValue, setDefaultValue] = React.useState([]);
 
-    const id = Number(getID.substr(1, 99));
+    const id = match.match.params.id;
+
+    [
+        {
+            touched: true,
+            validating: false,
+            errors: [],
+            name: ["username"],
+            value: "Ant Design",
+        },
+    ];
 
     React.useEffect(() => {
         fetch(`${API_URL}/projects?id_in= ${id}`)
@@ -31,6 +50,7 @@ export const EditProject = (match) => {
             .then(
                 (result) => {
                     const newResult = [];
+                    const newResult2 = [];
                     result.map((item) => {
                         return newResult.push({
                             id: Number(item.id),
@@ -42,7 +62,40 @@ export const EditProject = (match) => {
                             Share: item.Share,
                         });
                     });
+                    result.map((item) => {
+                        return newResult2.push(
+                            {
+                                touched: true,
+                                validating: false,
+                                errors: [],
+                                name: ["Title"],
+                                value: item.Title,
+                            },
+                            {
+                                touched: true,
+                                validating: false,
+                                errors: [],
+                                name: ["Description"],
+                                value: item.Description,
+                            },
+                            {
+                                touched: true,
+                                validating: false,
+                                errors: [],
+                                name: ["Client"],
+                                value: item.Client,
+                            },
+                            {
+                                touched: true,
+                                validating: false,
+                                errors: [],
+                                name: ["Share"],
+                                value: item.Share,
+                            }
+                        );
+                    });
                     setApi(newResult);
+                    setDefaultValue(newResult2);
                 },
                 (error) => {
                     console.log(error);
@@ -58,23 +111,34 @@ export const EditProject = (match) => {
         };
         reader.readAsDataURL(file);
     }
-    console.log(id);
 
-    const onsubmit = (value) => {
-        value.Image = file;
-        console.log(value);
-        axios
-            .put(`${API_URL}/projects/${id}`, value)
-            .then((res) => {
-                alert("success");
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
+    function showConfirm(value) {
+        confirm({
+            title: "Do you want to delete these items?",
+            icon: <ExclamationCircleOutlined />,
+            content:
+                "When clicked the OK button, this dialog will be closed after 0.5 second",
+            onOk() {
+                value.Image = file;
+                console.log(value);
+                axios.put(`${API_URL}/projects/${id}`, value).then((res) => {
+                    history.push("/project");
+                    openNotificationWithIcon("success");
+                });
+                return new Promise((resolve, reject) => {
+                    setTimeout(Math.random() > 0.5 ? resolve : reject, 150);
+                }).catch(() => console.log("Oops errors!"));
+            },
+            onCancel() {},
+        });
+    }
 
     return (
-        <Form className="form-add-project" onFinish={onsubmit}>
+        <Form
+            fields={defaultValue}
+            className="form-add-project"
+            onFinish={showConfirm}
+        >
             <Form.Item
                 label="Title"
                 name="Title"
@@ -82,7 +146,7 @@ export const EditProject = (match) => {
                     { required: true, message: "Please input your Title!" },
                 ]}
             >
-                <Input key={api[0]?.Title} defaultValue={api[0]?.Title} />
+                <Input />
             </Form.Item>
             <Form.Item
                 label="Description"
@@ -94,12 +158,7 @@ export const EditProject = (match) => {
                     },
                 ]}
             >
-                <Input.TextArea
-                    key={api[0]?.Title}
-                    defaultValue={api[0]?.Title}
-                >
-                    {"ádá"}
-                </Input.TextArea>
+                <Input.TextArea></Input.TextArea>
             </Form.Item>
             <Form.Item
                 label="Client"
@@ -108,7 +167,7 @@ export const EditProject = (match) => {
                     { required: true, message: "Please input your Client!" },
                 ]}
             >
-                <Input key={api[0]?.Client} defaultValue={api[0]?.Client} />
+                <Input />
             </Form.Item>
             <Form.Item
                 label="Share"
@@ -117,7 +176,7 @@ export const EditProject = (match) => {
                     { required: true, message: "Please input your Share!" },
                 ]}
             >
-                <Input key={api[0]?.Share} defaultValue={api[0]?.Share} />
+                <Input />
             </Form.Item>
 
             <div className="input-file-container">

@@ -1,46 +1,17 @@
 import * as React from "react";
-import "./style.scss";
+import "../style.scss";
 import { Form, Input, Button } from "antd";
 import axios from "axios";
-import { API_URL } from "../../../config";
+import { API_URL } from "../../../../config";
 
-export const EditHomeImage = (match) => {
+export const AddHomeImage = () => {
+    document.title = "Add Home";
+
     const [file, setFile] = React.useState({});
 
+    const [form] = Form.useForm();
+
     const [inputValue, setInputValue] = React.useState(null);
-
-    const [api, setApi] = React.useState([
-        {
-            id: 43,
-            image: "",
-            link: "",
-        },
-    ]);
-
-    const getID = match.match.params.id;
-
-    const id = Number(getID.substr(1, 99));
-
-    React.useEffect(() => {
-        fetch(`${API_URL}/homes?id_in= ${id}`)
-            .then((res) => res.json())
-            .then(
-                (result) => {
-                    const newResult = [];
-                    result.map((item) => {
-                        return newResult.push({
-                            id: Number(item.id),
-                            image: item.Image.url,
-                            link: item.link,
-                        });
-                    });
-                    setApi(newResult);
-                },
-                (error) => {
-                    console.log(error);
-                }
-            );
-    }, []);
 
     function _handleImageChange(e) {
         var file = e.target.files[0];
@@ -55,9 +26,11 @@ export const EditHomeImage = (match) => {
         value.Image = file;
         console.log(value);
         axios
-            .put(`${API_URL}/homes/${id}`, value)
+            .post(`${API_URL}/homes`, value)
             .then((res) => {
                 alert("success");
+                form.resetFields();
+                window.location.reload(true);
             })
             .catch((err) => {
                 console.log(err);
@@ -73,6 +46,7 @@ export const EditHomeImage = (match) => {
             >
                 <Input />
             </Form.Item>
+
             <div className="input-file-container">
                 <label className="button-select-file" id="myfile">
                     Add Image
@@ -82,7 +56,6 @@ export const EditHomeImage = (match) => {
                     id="myfile"
                     onChange={(e) => {
                         _handleImageChange(e);
-                        console.log(e.target.files[0]);
                         const formData = new FormData();
                         formData.append("files", e.target.files[0]);
                         axios
@@ -100,12 +73,9 @@ export const EditHomeImage = (match) => {
                     }}
                     type="file"
                 />
-                {inputValue ? (
-                    <img className="preview" src={inputValue} />
-                ) : (
-                    <img className="preview" src={API_URL + api[0].image} />
-                )}
+                {inputValue && <img className="preview" src={inputValue} />}
             </div>
+
             <Form.Item>
                 <Button type="primary" htmlType="submit">
                     Submit

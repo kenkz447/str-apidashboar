@@ -1,11 +1,12 @@
 import * as React from "react";
-import "./style.scss";
+import "../style.scss";
 import { Form, Input, Button } from "antd";
 import axios from "axios";
-import { API_URL } from "../../../config";
+import { API_URL } from "../../../../config";
 const { TextArea } = Input;
 
 export const FormAddProject = () => {
+    document.title = "Add Project";
     const [file, setFile] = React.useState({});
 
     const [form] = Form.useForm();

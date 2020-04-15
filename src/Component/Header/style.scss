@@ -1,0 +1,15 @@
+.header_dashboar {
+    .dropdown-header {
+        padding: 0 14px;
+        transition: 0.5s;
+        &:hover {
+            background: rgba(0, 0, 0, 0.025);
+        }
+        color: rgba(0, 0, 0, 0.65);
+    }
+    .profile-dropdowni-title {
+        margin-left: 8px;
+        line-height: 30px;
+        text-transform: uppercase;
+    }
+}

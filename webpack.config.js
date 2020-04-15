@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const ManifestPlugin = require("webpack-manifest-plugin");
+const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
 module.exports = {
     mode: "development",
@@ -15,18 +16,16 @@ module.exports = {
         contentBase: "./dist",
     },
     resolve: {
+        modules: ["node_modules"],
         extensions: [".ts", ".tsx", ".js"],
-        alias: {
-            _Style: path.resolve(__dirname, "./src/style/"),
-            _Home: path.resolve(__dirname, "./src/component/Home"),
-        },
+        plugins: [new TsconfigPathsPlugin({ configFile: "./tsconfig.json" })],
     },
     devServer: {},
     plugins: [
         new ManifestPlugin(),
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            title: "Caching",
+            title: "Loading",
         }),
     ],
     output: {

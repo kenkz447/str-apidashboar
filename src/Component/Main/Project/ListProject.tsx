@@ -1,10 +1,11 @@
 import * as React from "react";
 import { Table as TableANTD, Tag, Button } from "antd";
-import { API_URL } from "../../../config";
-import "./style.scss";
-import { Item, deleteItem, getApi } from "../../redux/store";
+import { API_URL } from "../../../../config";
+import "../style.scss";
+import { Item, deleteItem, getApi } from "../../../redux/store";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 var moment = require("moment");
 
@@ -14,7 +15,7 @@ interface TableListProps {
     mapAllapitoprops: (item: Item[]) => void;
 }
 
-class Table extends React.Component<TableListProps> {
+class ListProject extends React.Component<TableListProps> {
     constructor(props) {
         super(props);
         this.state = {};
@@ -25,7 +26,6 @@ class Table extends React.Component<TableListProps> {
             .then((res) => res.json())
             .then(
                 (result) => {
-                    console.log(result);
                     const newResult = [];
                     result.map((item) => {
                         return newResult.push({
@@ -53,6 +53,7 @@ class Table extends React.Component<TableListProps> {
                     console.log(error);
                 }
             );
+        document.title = "All Project";
     }
 
     render() {
@@ -67,15 +68,11 @@ class Table extends React.Component<TableListProps> {
                     bordered
                     columns={[
                         {
-                            title: "id",
-                            dataIndex: "id",
-                        },
-                        {
                             title: "Title",
                             dataIndex: "title",
                         },
                         {
-                            title: "Update_as",
+                            title: "Created At",
                             dataIndex: "created_at",
                         },
                         {
@@ -85,25 +82,26 @@ class Table extends React.Component<TableListProps> {
                             render: (e) => <img src={API_URL + e} alt="" />,
                         },
                         {
+                            className: "action",
                             title: "Action",
                             key: "Action",
                             dataIndex: "action_delete",
                             render: (action) => (
                                 <>
+                                    <Link
+                                        className="ant-btn ant-btn-circle ant-btn-icon-only"
+                                        to={"/project/edit/" + action.id}
+                                    >
+                                        <EditOutlined />
+                                    </Link>
                                     <Button
-                                        type="danger"
+                                        icon={<DeleteOutlined />}
+                                        size="middle"
+                                        shape="circle"
                                         onClick={() => {
                                             Deleteitem(action);
                                         }}
-                                    >
-                                        Delete
-                                    </Button>
-                                    <Link
-                                        className="btn-edit"
-                                        to={"/project/edit/:" + action.id}
-                                    >
-                                        Edit
-                                    </Link>
+                                    />
                                 </>
                             ),
                         },
@@ -133,4 +131,4 @@ const mapDispatchtoProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchtoProps)(Table);
+export default connect(mapStateToProps, mapDispatchtoProps)(ListProject);

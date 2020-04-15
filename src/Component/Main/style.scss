@@ -61,20 +61,19 @@
             border-radius: 2px;
         }
     }
-}
-
-.btn-edit {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 75px;
-    height: 32px;
-    background: #1890ff;
-    color: #ffffff;
-    float: left;
-    margin-right: 10px;
-    border-radius: 2px;
-    &:hover{
-        color: #ffffff;  
+    th {
+        text-transform: capitalize;
     }
+    td.action {
+        text-align: right;
+        > * {
+            margin: 0 5px;
+        }
+    }
+}
+.ant-pagination {
+    height: 70px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
