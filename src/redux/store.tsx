@@ -1,5 +1,6 @@
 import { createStore, combineReducers, Action, applyMiddleware } from "redux";
-import { API_URL } from "../../config";
+import { API_URL, getCookie } from "../../config";
+import { notification } from "antd";
 import axios from "axios";
 
 export interface Store {
@@ -56,14 +57,19 @@ const deleteItemMiddleware = (store) => (next) => (action) => {
             data: {
                 id: action.item.id,
             },
+            headers: {
+                Authorization: `Bearer ${getCookie()}`,
+            },
         })
         .then((o) => {
-            if (o.statusText == "OK") {
-                next({
-                    ...action,
-                    item: action.item,
-                });
-            }
+            next({
+                ...action,
+                item: action.item,
+            });
+            notification["success"]({
+                message: "complete",
+                duration: 2,
+            });
         })
         .catch(function (error) {
             alert(error);

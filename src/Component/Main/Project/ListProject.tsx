@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Table as TableANTD, Tag, Button } from "antd";
+import { Table as TableANTD, Button, Pagination } from "antd";
 import { API_URL } from "../../../../config";
 import "../style.scss";
 import { Item, deleteItem, getApi } from "../../../redux/store";
@@ -21,45 +21,81 @@ interface TableListProps {
     mapAllapitoprops: (item: Item[]) => void;
 }
 
-class ListProject extends React.Component<TableListProps> {
+interface IState {
+    total?: number;
+    page?: number;
+}
+
+class ListProject extends React.Component<TableListProps, IState> {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = { total: 1, page: 1 };
+        this.onChange = this.onChange.bind(this);
     }
 
     componentDidMount() {
-        fetch(`${API_URL}/projects`)
+        fetch(`${API_URL}/projects?_start=0&_limit=10`)
             .then((res) => res.json())
-            .then(
-                (result) => {
-                    const newResult = [];
-                    result.map((item) => {
-                        return newResult.push({
+            .then((result) => {
+                const newResult = [];
+                result.map((item) => {
+                    return newResult.push({
+                        id: Number(item.id),
+                        created_at: moment(item.updated_at).format(
+                            "DD-MM-YYYY"
+                        ),
+                        image: item.Image.url,
+                        title: item.Title,
+                        description: item.Description,
+                        action_delete: {
                             id: Number(item.id),
                             created_at: moment(item.updated_at).format(
-                                "DD-MM-YYYY"
+                                ",DD-MM-YYYY"
                             ),
-                            image: item.Image.url,
                             title: item.Title,
                             description: item.Description,
-                            action_delete: {
-                                id: Number(item.id),
-                                created_at: moment(item.updated_at).format(
-                                    ",DD-MM-YYYY"
-                                ),
-                                title: item.Title,
-                                description: item.Description,
-                                action_delete: API_URL + "/projects" + item.id,
-                            },
-                        });
+                            action_delete: API_URL + "/projects" + item.id,
+                        },
                     });
-                    this.props.mapAllapitoprops(newResult);
-                },
-                (error) => {
-                    console.log(error);
-                }
-            );
+                });
+                this.props.mapAllapitoprops(newResult);
+            });
+
+        fetch(`${API_URL}/projects/count`)
+            .then((res) => res.json())
+            .then((result) => {
+                this.setState({ ...this.state, total: result });
+            });
+
         document.title = "All Project";
+    }
+    onChange(e) {
+        fetch(`${API_URL}/projects?_start=${10 * (e - 1)}&_limit=10`)
+            .then((res) => res.json())
+            .then((result) => {
+                const newResult = [];
+                result.map((item) => {
+                    return newResult.push({
+                        id: Number(item.id),
+                        created_at: moment(item.updated_at).format(
+                            "DD-MM-YYYY"
+                        ),
+                        image: item.Image.url,
+                        title: item.Title,
+                        description: item.Description,
+                        action_delete: {
+                            id: Number(item.id),
+                            created_at: moment(item.updated_at).format(
+                                ",DD-MM-YYYY"
+                            ),
+                            title: item.Title,
+                            description: item.Description,
+                            action_delete: API_URL + "/projects" + item.id,
+                        },
+                    });
+                });
+                this.props.mapAllapitoprops(newResult);
+            });
     }
 
     render() {
@@ -72,6 +108,7 @@ class ListProject extends React.Component<TableListProps> {
                 </div>
                 <TableANTD
                     bordered
+                    pagination={false}
                     columns={[
                         {
                             title: "Title",
@@ -123,6 +160,11 @@ class ListProject extends React.Component<TableListProps> {
                     ]}
                     dataSource={items}
                     rowKey="id"
+                />
+                <Pagination
+                    defaultCurrent={1}
+                    total={this.state.total}
+                    onChange={this.onChange}
                 />
             </div>
         );

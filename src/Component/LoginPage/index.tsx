@@ -26,14 +26,13 @@ export const LoginPage = () => {
                 document.cookie = "auth=" + response.data.jwt;
                 notification["success"]({
                     message: "Logged in successfully",
-                    duration: 500,
+                    duration: 2,
                 });
                 history.push("/home");
             })
             .catch(() => {
                 notification["error"]({
                     message: "Login failed",
-                    description: "Wrong username or password !!!",
                 });
             });
     }

@@ -55,65 +55,42 @@ class HomeImageGallery extends React.Component<TableListProps, IState> {
                 });
                 this.props.mapAllapitoprops(newResult);
             });
+
         fetch(`${API_URL}/homes/count`)
             .then((res) => res.json())
             .then((result) => {
+                console.log(result);
+
                 this.setState({ ...this.state, total: result });
             });
+
         document.title = "All Home";
     }
     onChange(e) {
-        if (e === 1) {
-            fetch(`${API_URL}/homes?_start=${1}&_limit=10`)
-                .then((res) => res.json())
-                .then((result) => {
-                    const newResult = [];
-                    result.map((item) => {
-                        return newResult.push({
+        fetch(`${API_URL}/homes?_start=${10 * (e - 1)}&_limit=10`)
+            .then((res) => res.json())
+            .then((result) => {
+                const newResult = [];
+                result.map((item) => {
+                    return newResult.push({
+                        id: Number(item.id),
+                        created_at: moment(item.updated_at).format(
+                            "DD-MM-YYYY"
+                        ),
+                        image: item.Image.url,
+                        link: item.link,
+                        action_delete: {
                             id: Number(item.id),
-                            created_at: moment(item.updated_at).format(
-                                "DD-MM-YYYY"
-                            ),
-                            image: item.Image.url,
                             link: item.link,
-                            action_delete: {
-                                id: Number(item.id),
-                                link: item.link,
-                                created_at: moment(item.updated_at).format(
-                                    ",DD-MM-YYYY"
-                                ),
-                                action_delete: API_URL + "/home" + item.id,
-                            },
-                        });
-                    });
-                    this.props.mapAllapitoprops(newResult);
-                });
-        } else {
-            fetch(`${API_URL}/homes?_start=${10 * (e - 1) + 1}&_limit=10`)
-                .then((res) => res.json())
-                .then((result) => {
-                    const newResult = [];
-                    result.map((item) => {
-                        return newResult.push({
-                            id: Number(item.id),
                             created_at: moment(item.updated_at).format(
-                                "DD-MM-YYYY"
+                                ",DD-MM-YYYY"
                             ),
-                            image: item.Image.url,
-                            link: item.link,
-                            action_delete: {
-                                id: Number(item.id),
-                                link: item.link,
-                                created_at: moment(item.updated_at).format(
-                                    ",DD-MM-YYYY"
-                                ),
-                                action_delete: API_URL + "/homes" + item.id,
-                            },
-                        });
+                            action_delete: API_URL + "/homes" + item.id,
+                        },
                     });
-                    this.props.mapAllapitoprops(newResult);
                 });
-        }
+                this.props.mapAllapitoprops(newResult);
+            });
     }
     render() {
         const { items, Deleteitem } = this.props;

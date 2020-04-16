@@ -2,6 +2,7 @@ import * as React from "react";
 import { Row, Col } from "antd";
 
 export const WellCome = () => {
+    document.title = "Dashboard";
     return (
         <Row>
             <Col>

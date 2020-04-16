@@ -23,6 +23,9 @@ export const Navigation = () => {
 
     const data = [
         {
+            NavLink: [{ key: "Dashboard", link: "/" }],
+        },
+        {
             SubMenuKey: "home",
             NavLink: [
                 { key: "All Home", link: "/home" },
