@@ -2,7 +2,7 @@ import * as React from "react";
 import { API_URL } from "../../../../config";
 import { Button, Table as TableANTD, Pagination, Modal } from "antd";
 import { connect } from "react-redux";
-import { deleteItem, getApi, Item } from "../../../redux/storeHome";
+import { deleteItemHome, getApiHome, ItemHome } from "../../../redux/store";
 import { Link } from "react-router-dom";
 import "../style.scss";
 import {
@@ -14,9 +14,9 @@ const { confirm } = Modal;
 var moment = require("moment");
 
 interface TableListProps {
-    items: Item[];
-    Deleteitem: (item: Item) => void;
-    mapAllapitoprops: (item: Item[]) => void;
+    items: ItemHome[];
+    Deleteitem: (item: ItemHome) => void;
+    mapAllapitoprops: (item: ItemHome[]) => void;
 }
 
 interface IState {
@@ -59,8 +59,6 @@ class HomeImageGallery extends React.Component<TableListProps, IState> {
         fetch(`${API_URL}/homes/count`)
             .then((res) => res.json())
             .then((result) => {
-                console.log(result);
-
                 this.setState({ ...this.state, total: result });
             });
 
@@ -170,10 +168,10 @@ const mapStateToProps = (state) => {
 const mapDispatchtoProps = (dispatch) => {
     return {
         mapAllapitoprops: (item) => {
-            dispatch(getApi(item));
+            dispatch(getApiHome(item));
         },
         Deleteitem: (item) => {
-            dispatch(deleteItem(item));
+            dispatch(deleteItemHome(item));
         },
     };
 };

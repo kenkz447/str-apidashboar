@@ -1,13 +1,21 @@
-import { createStore, combineReducers, Action, applyMiddleware } from "redux";
-import { API_URL, getCookie } from "../../config";
-import { notification } from "antd";
-import axios from "axios";
+import { createStore, Action, applyMiddleware } from "redux";
 
-export interface Store {
-    items: Item[];
+import { deleteItemMiddleware, loggerMiddleware } from "./middleware/project";
+import { reducer } from "./reducers/project";
+
+import { reducerHome } from "./reducers/home";
+import {
+    loggerMiddlewareHome,
+    deleteItemMiddlewareHome,
+} from "./middleware/home";
+
+/* =============================== project ===========================  */
+
+export interface StoreProject {
+    items: ItemProject[];
 }
 
-export interface Item {
+export interface ItemProject {
     id?: number;
     created_at?: string;
     image?: string;
@@ -18,79 +26,43 @@ export interface Item {
     share?: string;
 }
 
-interface ProjectReducer extends Action<"GET" | "ADD" | "UPDATE" | "DELETE"> {
-    item?: Item;
-    states?: Item[];
+export interface ProjectReducer extends Action<"GET" | "ADD" | "DELETE"> {
+    item?: ItemProject;
+    states?: ItemProject[];
 }
 
-const Projectreducer = (state: Item[] = [], action: ProjectReducer) => {
-    switch (action.type) {
-        case "GET":
-            return (state = action.states);
-        case "ADD":
-            return [...state, action.item];
-        case "DELETE":
-            return state.filter((o) => o.id !== action.item.id);
-        default:
-            return state;
-    }
-};
+/* =============================== Home ===========================  */
 
-const reducers = combineReducers<Store>({
-    items: Projectreducer,
-});
-
-const loggerMiddleware = (store) => {
-    return (next) => {
-        return (action) => {
-            return next(action);
-        };
-    };
-};
-
-const deleteItemMiddleware = (store) => (next) => (action) => {
-    if (action.type !== "DELETE") {
-        return next(action);
-    }
-    axios
-        .delete(`${API_URL}/projects/${action.item.id}`, {
-            data: {
-                id: action.item.id,
-            },
-            headers: {
-                Authorization: `Bearer ${getCookie()}`,
-            },
-        })
-        .then((o) => {
-            next({
-                ...action,
-                item: action.item,
-            });
-            notification["success"]({
-                message: "complete",
-                duration: 2,
-            });
-        })
-        .catch(function (error) {
-            alert(error);
-        });
-};
-
-const reducer = combineReducers({
-    items: Projectreducer,
-});
-
-export const store = createStore(
+export const storeProject = createStore(
     reducer,
     applyMiddleware(loggerMiddleware, deleteItemMiddleware)
 );
 
-export const getApi = (states: Item[]) => ({
-    type: "GET",
-    states,
-});
+export interface StoreHome {
+    itemsHome: ItemHome[];
+}
 
-export const deleteItem = (item: Item): ProjectReducer => ({
-    type: "DELETE",
-    item: item,
-});
+export interface ItemHome {
+    id?: number;
+    link?: string;
+    image?: string;
+    created_at?: string;
+}
+
+export interface HomesReducer extends Action<"GET" | "ADD" | "DELETE"> {
+    item?: ItemHome;
+    states?: ItemHome[];
+}
+
+export const storeHome = createStore(
+    reducerHome,
+    applyMiddleware(loggerMiddlewareHome, deleteItemMiddlewareHome)
+);
+
+/* =============================== export ===========================  */
+
+export * from "./action/home";
+export * from "./middleware/project";
+export * from "./action/project";
+
+/* =============================== router ===========================  */

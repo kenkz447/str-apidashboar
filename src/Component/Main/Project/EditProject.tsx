@@ -90,6 +90,7 @@ export const EditProject = (match) => {
                     });
                     setApi(newResult);
                     setDefaultValue(newResult2);
+                    setFile(result[0].Image);
                 },
                 (error) => {
                     console.log(error);

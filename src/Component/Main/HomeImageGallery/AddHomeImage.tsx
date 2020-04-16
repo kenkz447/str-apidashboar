@@ -6,6 +6,7 @@ import { API_URL, getCookie } from "../../../../config";
 import { useHistory } from "react-router-dom";
 import { CheckCircleOutlined } from "@ant-design/icons";
 
+
 export const AddHomeImage = () => {
     document.title = "Add Home";
 

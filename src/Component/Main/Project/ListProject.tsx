@@ -2,7 +2,7 @@ import * as React from "react";
 import { Table as TableANTD, Button, Pagination } from "antd";
 import { API_URL } from "../../../../config";
 import "../style.scss";
-import { Item, deleteItem, getApi } from "../../../redux/store";
+import { ItemProject, deleteItem, getApi } from "../../../redux/store";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -16,9 +16,9 @@ const { confirm } = Modal;
 var moment = require("moment");
 
 interface TableListProps {
-    items: Item[];
-    Deleteitem: (item: Item) => void;
-    mapAllapitoprops: (item: Item[]) => void;
+    items: ItemProject[];
+    Deleteitem: (item: ItemProject) => void;
+    mapAllapitoprops: (item: ItemProject[]) => void;
 }
 
 interface IState {

@@ -9,7 +9,6 @@ export const Navigation = () => {
     const [key, setKey] = React.useState("");
     const location = useLocation().pathname;
     const removeFirstSlash = location.substr(1, 999);
-
     React.useEffect(() => {
         if (removeFirstSlash.search("/") > 0) {
             setDefaultOpenKeys(
@@ -19,7 +18,7 @@ export const Navigation = () => {
             setDefaultOpenKeys(removeFirstSlash);
         }
         setKey(document.title);
-    });
+    }, [location]);
 
     const data = [
         {
@@ -46,14 +45,13 @@ export const Navigation = () => {
             NavLink: [{ key: "About", link: "/about" }],
         },
     ];
-    console.log(key);
     return (
         <Menu
             style={{ width: "100%" }}
             defaultSelectedKeys={[key]}
             defaultOpenKeys={[defaultOpenKeys]}
             mode="inline"
-            key={key}
+            key={document.title}
         >
             {data.map((items) => {
                 if (items.SubMenuKey) {

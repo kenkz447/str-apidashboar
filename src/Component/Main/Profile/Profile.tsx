@@ -1,41 +1,44 @@
 import * as React from "react";
-import { Row, Col } from "antd";
+import { Row, Col, Descriptions } from "antd";
+import { API_URL, getCookie } from "../../../../config";
+var moment = require("moment");
 
 export const Profile = () => {
     const [data, setData] = React.useState({
-        name: "",
-        Username: "",
-        email: "",
+        created_at: "2020-04-14T06:52:38.549Z",
+        email: "dovanloc2466@gmail.com",
+        username: "dovanloc",
     });
     React.useEffect(() => {
-        function getCookie(cname) {
-            var name = cname + "=";
-            var decodedCookie = decodeURIComponent(document.cookie);
-            var ca = decodedCookie.split(";");
-            for (var i = 0; i < ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) == " ") {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    setData(JSON.parse(c.substring(name.length, c.length)));
-                    return c.substring(name.length, c.length);
-                }
-            }
-            return "";
+        async function postData() {
+            const response = await fetch(`${API_URL}/users/me`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${getCookie()}`,
+                },
+            });
+            return response.json();
         }
-        getCookie("successfullyLogin");
+        postData().then((e) => {
+            setData(e);
+        });
     }, []);
-    console.log(data);
     return (
         <Row>
             <Col>
-                <h2>Profile</h2>
-                <span>Your name : </span> <span>{data.name}</span>
-                <br />
-                <span>Your Username : </span> <span>{data.Username}</span>
-                <br />
-                <span>Your email : </span> <span>{data.email}</span>
+                <Descriptions title="User Info">
+                    <Descriptions.Item label="UserName">
+                        {data.username}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Email">
+                        {data.email}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Create at">
+                        {moment(data.created_at).format("DD-MM-YYYY")}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Remark">empty</Descriptions.Item>
+                </Descriptions>
             </Col>
         </Row>
     );

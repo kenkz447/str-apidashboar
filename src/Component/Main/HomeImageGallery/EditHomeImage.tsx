@@ -43,6 +43,7 @@ export const EditHomeImage = (match) => {
                         link: item.link,
                     });
                 });
+                setFile(result[0].Image);
                 result.map((item) => {
                     return newResult2.push({
                         touched: true,

@@ -7,7 +7,7 @@ const { Sider, Header, Footer, Content } = LayoutAntd;
 import { Provider } from "react-redux";
 import { Routes } from "../Component/Routes/Routes";
 import { ConnectedRouter } from "connected-react-router";
-import configureStore, { history } from "../redux/configureStore";
+import configureStore, { history } from "../redux/RouterStore";
 
 interface AppProps {}
 
