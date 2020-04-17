@@ -10,6 +10,7 @@ export const Profile = () => {
         username: "dovanloc",
     });
     React.useEffect(() => {
+        document.title = "Profile";
         async function postData() {
             const response = await fetch(`${API_URL}/users/me`, {
                 method: "GET",
@@ -27,18 +28,30 @@ export const Profile = () => {
     return (
         <Row>
             <Col>
-                <Descriptions title="User Info">
-                    <Descriptions.Item label="UserName">
-                        {data.username}
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Email">
-                        {data.email}
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Create at">
-                        {moment(data.created_at).format("DD-MM-YYYY")}
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Remark">empty</Descriptions.Item>
-                </Descriptions>
+                <div>
+                    <div className="table__wrap-header">
+                        <h3 className="table__wrap-header__title">
+                            {document.title}
+                        </h3>
+                    </div>
+                    <Descriptions
+                        className="form-add-project"
+                        title="User Info"
+                    >
+                        <Descriptions.Item label="UserName">
+                            {data.username}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Email">
+                            {data.email}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Create at">
+                            {moment(data.created_at).format("DD-MM-YYYY")}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Remark">
+                            empty
+                        </Descriptions.Item>
+                    </Descriptions>
+                </div>
             </Col>
         </Row>
     );

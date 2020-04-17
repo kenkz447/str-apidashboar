@@ -114,8 +114,12 @@ export const FormEditAbout = () => {
 
     return (
         <Row>
-            <Col span={12}>
-                <h2>{api.Title}</h2>
+            <Col span={24}>
+                <div className="table__wrap-header">
+                    <h3 className="table__wrap-header__title">
+                        {document.title}
+                    </h3>
+                </div>
                 <Form
                     fields={defaulValues}
                     className="form-add-project"

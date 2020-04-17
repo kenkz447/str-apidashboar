@@ -56,6 +56,7 @@ export const EditProject = (match) => {
                             Share: item.Share,
                         });
                     });
+                    document.title = `Edit ${newResult[0].Title}`;
                     result.map((item) => {
                         return newResult2.push(
                             {
@@ -135,87 +136,95 @@ export const EditProject = (match) => {
     }
 
     return (
-        <Form
-            fields={defaultValue}
-            className="form-add-project"
-            onFinish={showConfirm}
-        >
-            <Form.Item
-                label="Title"
-                name="Title"
-                rules={[
-                    { required: true, message: "Please input your Title!" },
-                ]}
-            >
-                <Input />
-            </Form.Item>
-            <Form.Item
-                label="Description"
-                name="Description"
-                rules={[
-                    {
-                        required: true,
-                        message: "Please input your Description!",
-                    },
-                ]}
-            >
-                <Input.TextArea></Input.TextArea>
-            </Form.Item>
-            <Form.Item
-                label="Client"
-                name="Client"
-                rules={[
-                    { required: true, message: "Please input your Client!" },
-                ]}
-            >
-                <Input />
-            </Form.Item>
-            <Form.Item
-                label="Share"
-                name="Share"
-                rules={[
-                    { required: true, message: "Please input your Share!" },
-                ]}
-            >
-                <Input />
-            </Form.Item>
-
-            <div className="input-file-container">
-                <label className="button-select-file" id="myfile">
-                    Edit
-                </label>
-                <Input
-                    className="input-file"
-                    id="myfile"
-                    onChange={(e) => {
-                        _handleImageChange(e);
-                        const formData = new FormData();
-                        formData.append("files", e.target.files[0]);
-                        axios
-                            .post(`${API_URL}/upload`, formData, {
-                                headers: {
-                                    "Content-Type": "multipart/form-data",
-                                    Authorization: `Bearer ${getCookie()}`,
-                                },
-                            })
-                            .then((res) => {
-                                setFile(res.data[0]);
-                            });
-                    }}
-                    type="file"
-                />
-
-                {inputValue ? (
-                    <img className="preview" src={inputValue} />
-                ) : (
-                    <img className="preview" src={API_URL + api[0].image} />
-                )}
+        <div>
+            <div className="table__wrap-header">
+                <h3 className="table__wrap-header__title">{document.title}</h3>
             </div>
-            <Form.Item>
-                <Button type="primary" htmlType="submit">
-                    Submit
-                </Button>
-            </Form.Item>
-        </Form>
+            <Form
+                fields={defaultValue}
+                className="form-add-project"
+                onFinish={showConfirm}
+            >
+                <Form.Item
+                    label="Title"
+                    name="Title"
+                    rules={[
+                        { required: true, message: "Please input your Title!" },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Description"
+                    name="Description"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please input your Description!",
+                        },
+                    ]}
+                >
+                    <Input.TextArea></Input.TextArea>
+                </Form.Item>
+                <Form.Item
+                    label="Client"
+                    name="Client"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please input your Client!",
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Share"
+                    name="Share"
+                    rules={[
+                        { required: true, message: "Please input your Share!" },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+
+                <div className="input-file-container">
+                    <label className="button-select-file" id="myfile">
+                        Edit
+                    </label>
+                    <Input
+                        className="input-file"
+                        id="myfile"
+                        onChange={(e) => {
+                            _handleImageChange(e);
+                            const formData = new FormData();
+                            formData.append("files", e.target.files[0]);
+                            axios
+                                .post(`${API_URL}/upload`, formData, {
+                                    headers: {
+                                        "Content-Type": "multipart/form-data",
+                                        Authorization: `Bearer ${getCookie()}`,
+                                    },
+                                })
+                                .then((res) => {
+                                    setFile(res.data[0]);
+                                });
+                        }}
+                        type="file"
+                    />
+
+                    {inputValue ? (
+                        <img className="preview" src={inputValue} />
+                    ) : (
+                        <img className="preview" src={API_URL + api[0].image} />
+                    )}
+                </div>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                        Submit
+                    </Button>
+                </Form.Item>
+            </Form>
+        </div>
     );
 };

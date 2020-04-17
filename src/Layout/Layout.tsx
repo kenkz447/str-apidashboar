@@ -18,7 +18,7 @@ export const Layout = (props: AppProps) => {
         <Provider store={store}>
             <ConnectedRouter history={history}>
                 <LayoutAntd>
-                    <Sider>
+                    <Sider trigger={null} collapsible>
                         <a href="/">
                             <div className={"logo"}>
                                 <img

@@ -1,7 +1,8 @@
+import "../style.scss";
+
 import * as React from "react";
 import { Table as TableANTD, Button, Pagination } from "antd";
 import { API_URL } from "../../../../config";
-import "../style.scss";
 import { ItemProject, deleteItem, getApi } from "../../../redux/store";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -11,6 +12,7 @@ import {
     ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import { Modal, notification } from "antd";
+
 const { confirm } = Modal;
 
 var moment = require("moment");
@@ -103,7 +105,10 @@ class ListProject extends React.Component<TableListProps, IState> {
 
         return (
             <div className="table">
-                <div className="table__wrap-button">
+                <div className="table__wrap-header">
+                    <h3 className="table__wrap-header__title">
+                        {document.title}
+                    </h3>
                     <Link to="/project/add">ADD NEW</Link>
                 </div>
                 <TableANTD
@@ -126,7 +131,7 @@ class ListProject extends React.Component<TableListProps, IState> {
                         },
                         {
                             className: "action",
-                            title: "Action",
+                            title: "Actions",
                             key: "Action",
                             dataIndex: "action_delete",
                             render: (action) => (
@@ -138,6 +143,7 @@ class ListProject extends React.Component<TableListProps, IState> {
                                         <EditOutlined />
                                     </Link>
                                     <Button
+                                        danger
                                         icon={<DeleteOutlined />}
                                         size="middle"
                                         shape="circle"

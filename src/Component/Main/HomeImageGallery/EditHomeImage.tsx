@@ -44,6 +44,7 @@ export const EditHomeImage = (match) => {
                     });
                 });
                 setFile(result[0].Image);
+                document.title = `Edit ${newResult[0].Title}`;
                 result.map((item) => {
                     return newResult2.push({
                         touched: true,
@@ -100,65 +101,72 @@ export const EditHomeImage = (match) => {
     };
 
     return (
-        <Form
-            fields={defaultValue}
-            className="form-add-project"
-            onFinish={onsubmit}
-        >
-            <Form.Item
-                label="link"
-                name="link"
-                rules={[{ required: true, message: "Please input your link!" }]}
-            >
-                <Input />
-            </Form.Item>
-            <div className="input-file-container">
-                <label className="button-select-file" id="myfile">
-                    Upload image
-                </label>
-                <Input
-                    className="input-file"
-                    id="myfile"
-                    onChange={(e) => {
-                        _handleImageChange(e);
-                        const formData = new FormData();
-                        formData.append("files", e.target.files[0]);
-                        axios
-                            .post(`${API_URL}/upload`, formData, {
-                                headers: {
-                                    "Content-Type": "multipart/form-data",
-                                    Authorization: `Bearer ${getCookie()}`,
-                                },
-                            })
-                            .then((res) => {
-                                notification.open({
-                                    message: "upload success",
-                                    icon: (
-                                        <CheckCircleOutlined
-                                            style={{
-                                                color: "#28a745",
-                                                fontSize: "13px",
-                                            }}
-                                        />
-                                    ),
-                                    duration: 1.5,
-                                });
-                                setFile(res.data[0]);
-                            });
-                    }}
-                    type="file"
-                />
-                {inputValue ? (
-                    <img className="preview" src={inputValue} />
-                ) : (
-                    <img className="preview" src={API_URL + api[0].image} />
-                )}
+        <div>
+            <div className="table__wrap-header">
+                <h3 className="table__wrap-header__title">{document.title}</h3>
             </div>
-            <Form.Item>
-                <Button type="primary" htmlType="submit">
-                    Submit
-                </Button>
-            </Form.Item>
-        </Form>
+            <Form
+                fields={defaultValue}
+                className="form-add-project"
+                onFinish={onsubmit}
+            >
+                <Form.Item
+                    label="link"
+                    name="link"
+                    rules={[
+                        { required: true, message: "Please input your link!" },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <div className="input-file-container">
+                    <label className="button-select-file" id="myfile">
+                        Upload image
+                    </label>
+                    <Input
+                        className="input-file"
+                        id="myfile"
+                        onChange={(e) => {
+                            _handleImageChange(e);
+                            const formData = new FormData();
+                            formData.append("files", e.target.files[0]);
+                            axios
+                                .post(`${API_URL}/upload`, formData, {
+                                    headers: {
+                                        "Content-Type": "multipart/form-data",
+                                        Authorization: `Bearer ${getCookie()}`,
+                                    },
+                                })
+                                .then((res) => {
+                                    notification.open({
+                                        message: "upload success",
+                                        icon: (
+                                            <CheckCircleOutlined
+                                                style={{
+                                                    color: "#28a745",
+                                                    fontSize: "13px",
+                                                }}
+                                            />
+                                        ),
+                                        duration: 1.5,
+                                    });
+                                    setFile(res.data[0]);
+                                });
+                        }}
+                        type="file"
+                    />
+                    {inputValue ? (
+                        <img className="preview" src={inputValue} />
+                    ) : (
+                        <img className="preview" src={API_URL + api[0].image} />
+                    )}
+                </div>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                        Submit
+                    </Button>
+                </Form.Item>
+            </Form>
+        </div>
     );
 };

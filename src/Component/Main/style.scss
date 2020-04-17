@@ -6,6 +6,9 @@
     }
 }
 .form-add-project {
+    padding: 20px 16px 1px 16px;
+    background: #fafafa;
+    border-radius: 0 0 2px 2px;
     &__preview-image {
         max-width: 300px;
         max-height: 300px;
@@ -45,11 +48,19 @@
 }
 
 .table {
-    &__wrap-button {
+    &__wrap-header {
         display: flex;
         align-items: center;
-        justify-content: flex-end;
-        height: 70px;
+        justify-content: space-between;
+        height: 60px;
+        padding: 0 16px;
+        background: #ffffff;
+        border-radius: 2px 2px 0 0;
+        &__title {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
         a {
             display: flex;
             align-items: center;

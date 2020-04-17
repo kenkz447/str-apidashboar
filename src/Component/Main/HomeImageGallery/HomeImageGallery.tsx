@@ -94,7 +94,10 @@ class HomeImageGallery extends React.Component<TableListProps, IState> {
         const { items, Deleteitem } = this.props;
         return (
             <div className="table">
-                <div className="table__wrap-button">
+                <div className="table__wrap-header">
+                    <h3 className="table__wrap-header__title">
+                        {document.title}
+                    </h3>
                     <Link to="/home/add">ADD NEW</Link>
                 </div>
                 <TableANTD
@@ -113,7 +116,7 @@ class HomeImageGallery extends React.Component<TableListProps, IState> {
                             render: (e) => <img src={API_URL + e} alt="" />,
                         },
                         {
-                            title: "Action",
+                            title: "Actions",
                             key: "Action",
                             dataIndex: "action_delete",
                             className: "action",
@@ -126,6 +129,7 @@ class HomeImageGallery extends React.Component<TableListProps, IState> {
                                         <EditOutlined />
                                     </Link>
                                     <Button
+                                        danger
                                         icon={<DeleteOutlined />}
                                         size="middle"
                                         shape="circle"

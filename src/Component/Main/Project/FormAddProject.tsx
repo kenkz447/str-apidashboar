@@ -15,8 +15,6 @@ export const FormAddProject = () => {
 
     const [inputValue, setInputValue] = React.useState(null);
 
-    const [resetInputFile, setResetInputFile] = React.useState("");
-
     let history = useHistory();
 
     function _handleImageChange(e) {
@@ -54,92 +52,100 @@ export const FormAddProject = () => {
     };
 
     return (
-        <Form form={form} className="form-add-project" onFinish={onsubmit}>
-            <Form.Item
-                label="Title"
-                name="Title"
-                rules={[
-                    { required: true, message: "Please input your Title!" },
-                ]}
-            >
-                <Input />
-            </Form.Item>
-            <Form.Item
-                label="Description"
-                name="Description"
-                rules={[
-                    {
-                        required: true,
-                        message: "Please input your Description!",
-                    },
-                ]}
-            >
-                <TextArea />
-            </Form.Item>
-            <Form.Item
-                label="Client"
-                name="Client"
-                rules={[
-                    { required: true, message: "Please input your Client!" },
-                ]}
-            >
-                <Input />
-            </Form.Item>
-            <Form.Item
-                label="Share"
-                name="Share"
-                rules={[
-                    { required: true, message: "Please input your Share!" },
-                ]}
-            >
-                <Input />
-            </Form.Item>
-
-            <div className="input-file-container">
-                <label className="button-select-file" id="myfile">
-                    Add Image
-                </label>
-                <Input
-                    className="input-file"
-                    id="myfile"
-                    onChange={(e) => {
-                        _handleImageChange(e);
-                        const formData = new FormData();
-                        formData.append("files", e.target.files[0]);
-                        axios
-                            .post(`${API_URL}/upload`, formData, {
-                                headers: {
-                                    "Content-Type": "multipart/form-data",
-                                    Authorization: `Bearer ${getCookie()}`,
-                                },
-                            })
-                            .then((res) => {
-                                notification.open({
-                                    message: "upload success",
-                                    icon: (
-                                        <CheckCircleOutlined
-                                            style={{
-                                                color: "#28a745",
-                                                fontSize: "13px",
-                                            }}
-                                        />
-                                    ),
-                                    duration: 1.5,
-                                });
-                                setFile(res.data[0]);
-                            });
-                    }}
-                    type="file"
-                    value={resetInputFile}
-                />
-                {inputValue && <img className="preview" src={inputValue} />}
+        <div>
+            <div className="table__wrap-header">
+                <h3 className="table__wrap-header__title">{document.title}</h3>
             </div>
+            <Form form={form} className="form-add-project" onFinish={onsubmit}>
+                <Form.Item
+                    label="Title"
+                    name="Title"
+                    rules={[
+                        { required: true, message: "Please input your Title!" },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Description"
+                    name="Description"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please input your Description!",
+                        },
+                    ]}
+                >
+                    <TextArea />
+                </Form.Item>
+                <Form.Item
+                    label="Client"
+                    name="Client"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Please input your Client!",
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Share"
+                    name="Share"
+                    rules={[
+                        { required: true, message: "Please input your Share!" },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
 
-            <Form.Item>
-                <Button type="primary" htmlType="submit">
-                    Submit
-                </Button>
-            </Form.Item>
-        </Form>
+                <div className="input-file-container">
+                    <label className="button-select-file" id="myfile">
+                        Add Image
+                    </label>
+                    <Input
+                        className="input-file"
+                        id="myfile"
+                        onChange={(e) => {
+                            _handleImageChange(e);
+                            const formData = new FormData();
+                            formData.append("files", e.target.files[0]);
+                            axios
+                                .post(`${API_URL}/upload`, formData, {
+                                    headers: {
+                                        "Content-Type": "multipart/form-data",
+                                        Authorization: `Bearer ${getCookie()}`,
+                                    },
+                                })
+                                .then((res) => {
+                                    notification.open({
+                                        message: "upload success",
+                                        icon: (
+                                            <CheckCircleOutlined
+                                                style={{
+                                                    color: "#28a745",
+                                                    fontSize: "13px",
+                                                }}
+                                            />
+                                        ),
+                                        duration: 1.5,
+                                    });
+                                    setFile(res.data[0]);
+                                });
+                        }}
+                        type="file"
+                        required
+                    />
+                    {inputValue && <img className="preview" src={inputValue} />}
+                </div>
+
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                        Submit
+                    </Button>
+                </Form.Item>
+            </Form>
+        </div>
     );
 };

@@ -104,35 +104,40 @@ export const FormEditContact = () => {
     }, []);
 
     return (
-        <Form fields={api} className="form-add-project" onFinish={onsubmit}>
-            <Form.Item label="Title" name="Title">
-                <Input />
-            </Form.Item>
+        <div>
+            <div className="table__wrap-header">
+                <h3 className="table__wrap-header__title">{document.title}</h3>
+            </div>
+            <Form fields={api} className="form-add-project" onFinish={onsubmit}>
+                <Form.Item label="Title" name="Title">
+                    <Input />
+                </Form.Item>
 
-            <Form.Item label="Description" name="Description">
-                <Input />
-            </Form.Item>
-            <Form.Item
-                label="Address"
-                name="Address"
-                rules={[{ message: "Please input your Address!" }]}
-            >
-                <Input />
-            </Form.Item>
-            <Form.Item label="Phone" name="Phone">
-                <Input />
-            </Form.Item>
-            <Form.Item label="Email" name="Email">
-                <Input />
-            </Form.Item>
-            <Form.Item label="Fax" name="Fax">
-                <Input />
-            </Form.Item>
-            <Form.Item>
-                <Button type="primary" htmlType="submit">
-                    Edit
-                </Button>
-            </Form.Item>
-        </Form>
+                <Form.Item label="Description" name="Description">
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="Address"
+                    name="Address"
+                    rules={[{ message: "Please input your Address!" }]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item label="Phone" name="Phone">
+                    <Input />
+                </Form.Item>
+                <Form.Item label="Email" name="Email">
+                    <Input />
+                </Form.Item>
+                <Form.Item label="Fax" name="Fax">
+                    <Input />
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                        Edit
+                    </Button>
+                </Form.Item>
+            </Form>
+        </div>
     );
 };
