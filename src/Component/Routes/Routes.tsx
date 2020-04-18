@@ -7,8 +7,8 @@ import {
     EditProject,
     FormEditAbout,
     FormEditContact,
-    WrapHomeImageGallery,
-    WrapListProject,
+    HomeImageGallery,
+    ListProject,
     WellCome,
     NoMatch,
 } from "../Main";
@@ -20,9 +20,9 @@ export const Routes = (props: RoutesProps) => {
     return (
         <Switch>
             <Route exact={true} path="/" component={WellCome} />
-            <Route exact={true} path="/home" component={WrapHomeImageGallery} />
+            <Route exact={true} path="/home" component={HomeImageGallery} />
             <Route exact={true} path="/home/add" component={AddHomeImage} />
-            <Route exact={true} path="/project" component={WrapListProject} />
+            <Route exact={true} path="/project" component={ListProject} />
             <Route
                 exact={true}
                 path="/project/add"

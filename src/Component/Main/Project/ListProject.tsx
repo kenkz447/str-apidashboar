@@ -2,8 +2,8 @@ import "../style.scss";
 
 import * as React from "react";
 import { Table as TableANTD, Button, Pagination } from "antd";
-import { API_URL } from "../../../../config";
-import { ItemProject, deleteItem, getApi } from "../../../redux/store";
+import { API_URL } from "@/../config.ts";
+import { ItemProject, deleteItem, getApi } from "@/redux/store";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -11,7 +11,7 @@ import {
     DeleteOutlined,
     ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import { Modal, notification } from "antd";
+import { Modal } from "antd";
 
 const { confirm } = Modal;
 
@@ -134,6 +134,8 @@ class ListProject extends React.Component<TableListProps, IState> {
                             title: "Actions",
                             key: "Action",
                             dataIndex: "action_delete",
+                            align: "right",
+                            width: 130,
                             render: (action) => (
                                 <>
                                     <Link
@@ -178,8 +180,10 @@ class ListProject extends React.Component<TableListProps, IState> {
 }
 
 const mapStateToProps = (state) => {
+    console.log(state);
+
     return {
-        items: state.items,
+        items: state.itemsProject,
     };
 };
 

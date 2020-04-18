@@ -1,8 +1,8 @@
 import * as React from "react";
-import ".././style.scss";
+import "@/Component/Main/style.scss";
 import { Form, Input, Button, Row, Col, notification, Modal } from "antd";
 import axios from "axios";
-import { API_URL, getCookie } from "../../../../config";
+import { API_URL, getCookie } from "@/../config.ts";
 import {
     CheckCircleOutlined,
     ExclamationCircleOutlined,
@@ -131,52 +131,59 @@ export const FormEditAbout = () => {
                     <Form.Item label="Description" name="Description">
                         <Input />
                     </Form.Item>
-                    <div className="input-file-container">
-                        <label className="button-select-file" id="myfile">
-                            Upload Image
-                        </label>
-                        <Input
-                            className="input-file"
-                            id="myfile"
-                            onChange={(e) => {
-                                _handleImageChange(e);
-                                const formData = new FormData();
-                                formData.append("files", e.target.files[0]);
-                                axios
-                                    .post(`${API_URL}/upload`, formData, {
-                                        headers: {
-                                            Authorization: `Bearer ${getCookie()}`,
-                                        },
-                                    })
-                                    .then((res) => {
-                                        notification.open({
-                                            message: "Upload success",
-                                            icon: (
-                                                <CheckCircleOutlined
-                                                    style={{
-                                                        color: "#28a745",
-                                                        fontSize: "13px",
-                                                    }}
-                                                />
-                                            ),
-                                            duration: 1.5,
+                    <Form.Item label="Image">
+                        <div className="input-file-container">
+                            <label className="ant-btn" id="myfile">
+                                Upload Image
+                            </label>
+                            <Input
+                                className="input-file"
+                                id="myfile"
+                                onChange={(e) => {
+                                    _handleImageChange(e);
+                                    const formData = new FormData();
+                                    formData.append("files", e.target.files[0]);
+                                    axios
+                                        .post(`${API_URL}/upload`, formData, {
+                                            headers: {
+                                                Authorization: `Bearer ${getCookie()}`,
+                                            },
+                                        })
+                                        .then((res) => {
+                                            notification.open({
+                                                message: "Upload success",
+                                                icon: (
+                                                    <CheckCircleOutlined
+                                                        style={{
+                                                            color: "#28a745",
+                                                            fontSize: "13px",
+                                                        }}
+                                                    />
+                                                ),
+                                                duration: 1.5,
+                                            });
+                                            setFile(res.data[0]);
                                         });
-                                        setFile(res.data[0]);
-                                    });
-                            }}
-                            type="file"
-                        />
-                        {inputValue ? (
-                            <img className="preview" src={inputValue} />
-                        ) : (
-                            <img
-                                className="preview"
-                                src={API_URL + api.Image.url}
+                                }}
+                                type="file"
                             />
-                        )}
-                    </div>
+                            {inputValue ? (
+                                <img className="preview" src={inputValue} />
+                            ) : (
+                                <img
+                                    className="preview"
+                                    src={API_URL + api.Image.url}
+                                />
+                            )}
+                        </div>
+                    </Form.Item>
+
                     <Form.Item>
-                        <Button type="primary" htmlType="submit">
+                        <Button
+                            className="button_submiit"
+                            type="primary"
+                            htmlType="submit"
+                        >
                             Edit
                         </Button>
                     </Form.Item>

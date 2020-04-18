@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Row, Col, Descriptions } from "antd";
-import { API_URL, getCookie } from "../../../../config";
+import { API_URL, getCookie } from "@/../config.ts";
 var moment = require("moment");
 
 export const Profile = () => {

@@ -1,6 +1,7 @@
 import axios from "axios";
-import { API_URL, getCookie } from "../../../config";
+import { API_URL, getCookie } from "@/../config.ts";
 import { notification } from "antd";
+
 export const loggerMiddlewareHome = (store) => {
     return (next) => {
         return (action) => {

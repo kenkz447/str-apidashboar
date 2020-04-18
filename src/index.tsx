@@ -1,6 +1,5 @@
 import "antd/dist/antd.css";
 import "./Style/style.scss";
-
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { App } from "./App";

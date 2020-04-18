@@ -20,6 +20,8 @@
     .input-file-container {
         position: relative;
         margin-bottom: 24px;
+        display: flex;
+        flex-direction: column;
         .input-file {
             position: absolute;
             top: 0;
@@ -111,4 +113,7 @@
 }
 .ant-notification-notice-icon {
     font-size: 25px;
+}
+.button_submiit {
+    margin-left: 120px;
 }

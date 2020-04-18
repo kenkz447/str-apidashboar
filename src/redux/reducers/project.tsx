@@ -1,7 +1,6 @@
-import { combineReducers } from "redux";
 import * as Store from "../store";
 
-const Projectreducer = (
+export const Projectreducer = (
     state: Store.ItemProject[] = [],
     action: Store.ProjectReducer
 ) => {
@@ -16,7 +15,3 @@ const Projectreducer = (
             return state;
     }
 };
-
-export const reducer = combineReducers<Store.StoreProject>({
-    items: Projectreducer,
-});

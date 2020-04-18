@@ -3,9 +3,9 @@ import "../style.scss";
 import { Form, Input, Button, Modal, notification } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import axios from "axios";
-import { API_URL, getCookie } from "../../../../config";
-import { CheckCircleOutlined } from "@ant-design/icons";
+import { API_URL, getCookie } from "@/../config.ts";
 import { useHistory } from "react-router-dom";
+
 const { confirm } = Modal;
 
 export const EditProject = (match) => {
@@ -187,40 +187,49 @@ export const EditProject = (match) => {
                 >
                     <Input />
                 </Form.Item>
+                <Form.Item label="Image">
+                    <div className="ant-btn">
+                        <label className="button-select-file" id="myfile">
+                            Select Image
+                        </label>
+                        <Input
+                            className="input-file"
+                            id="myfile"
+                            onChange={(e) => {
+                                _handleImageChange(e);
+                                const formData = new FormData();
+                                formData.append("files", e.target.files[0]);
+                                axios
+                                    .post(`${API_URL}/upload`, formData, {
+                                        headers: {
+                                            "Content-Type":
+                                                "multipart/form-data",
+                                            Authorization: `Bearer ${getCookie()}`,
+                                        },
+                                    })
+                                    .then((res) => {
+                                        setFile(res.data[0]);
+                                    });
+                            }}
+                            type="file"
+                        />
 
-                <div className="input-file-container">
-                    <label className="button-select-file" id="myfile">
-                        Edit
-                    </label>
-                    <Input
-                        className="input-file"
-                        id="myfile"
-                        onChange={(e) => {
-                            _handleImageChange(e);
-                            const formData = new FormData();
-                            formData.append("files", e.target.files[0]);
-                            axios
-                                .post(`${API_URL}/upload`, formData, {
-                                    headers: {
-                                        "Content-Type": "multipart/form-data",
-                                        Authorization: `Bearer ${getCookie()}`,
-                                    },
-                                })
-                                .then((res) => {
-                                    setFile(res.data[0]);
-                                });
-                        }}
-                        type="file"
-                    />
-
-                    {inputValue ? (
-                        <img className="preview" src={inputValue} />
-                    ) : (
-                        <img className="preview" src={API_URL + api[0].image} />
-                    )}
-                </div>
+                        {inputValue ? (
+                            <img className="preview" src={inputValue} />
+                        ) : (
+                            <img
+                                className="preview"
+                                src={API_URL + api[0].image}
+                            />
+                        )}
+                    </div>
+                </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit">
+                    <Button
+                        className="button_submiit"
+                        type="primary"
+                        htmlType="submit"
+                    >
                         Submit
                     </Button>
                 </Form.Item>

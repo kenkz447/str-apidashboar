@@ -1,6 +1,9 @@
 .login-row {
     min-height: inherit;
     background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     .col-login {
         background: #fafafa;
         padding: 30px;

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL, getCookie } from "../../../config";
+import { API_URL, getCookie } from "@/../config.ts";
 import { notification } from "antd";
 
 export const deleteItemMiddleware = (store) => (next) => (action) => {

@@ -1,18 +1,9 @@
 import "./style.scss";
-
 import * as React from "react";
-import { Form, Input, Button, Row, Col, notification } from "antd";
-import { API_URL } from "../../../config";
+import { Form, Input, Button, notification } from "antd";
+import { API_URL, layout, tailLayout } from "@/../config.ts";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-
-const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
-};
-const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 },
-};
 
 export const LoginPage = () => {
     const history = useHistory();
@@ -37,16 +28,13 @@ export const LoginPage = () => {
             });
     }
     return (
-        <Row
+        <div
             style={{
-                backgroundImage:
-                    "url(" + require("../../image/login.jpg") + ")",
+                backgroundImage: "url(" + require("@/image/login.jpg") + ")",
             }}
             className="login-row"
-            align="middle"
-            justify="center"
         >
-            <Col className="col-login" span={8}>
+            <div className="col-login">
                 <Form
                     className="form-login"
                     {...layout}
@@ -85,7 +73,7 @@ export const LoginPage = () => {
                         </Button>
                     </Form.Item>
                 </Form>
-            </Col>
-        </Row>
+            </div>
+        </div>
     );
 };

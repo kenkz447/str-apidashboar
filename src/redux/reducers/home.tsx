@@ -1,7 +1,6 @@
 import * as Store from "../store";
-import { combineReducers } from "redux";
 
-const HomesReducer = (
+export const HomesReducer = (
     state: Store.ItemHome[] = [],
     action: Store.HomesReducer
 ) => {
@@ -14,7 +13,3 @@ const HomesReducer = (
             return state;
     }
 };
-
-export const reducerHome = combineReducers({
-    items: HomesReducer,
-});

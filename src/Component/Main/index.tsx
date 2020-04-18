@@ -5,7 +5,12 @@ export { EditHomeImage } from "./HomeImageGallery/EditHomeImage";
 export { EditProject } from "./Project/EditProject";
 export { FormEditAbout } from "./About/FormEditAbout";
 export { FormEditContact } from "./Contact/FormEditContact";
-export { WrapHomeImageGallery } from "./HomeImageGallery/WrapHomeImageGallery";
-export { WrapListProject } from "./Project/WrapListProject";
+
+import HomeImageGallery from "./HomeImageGallery/HomeImageGallery";
+export { HomeImageGallery };
+
+import ListProject from "./Project/ListProject";
+export { ListProject };
+
 export { WellCome } from "./WellCome/WellCome";
 export { NoMatch } from "./NoMatch/NoMatch";

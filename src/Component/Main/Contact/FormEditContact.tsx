@@ -1,8 +1,8 @@
 import * as React from "react";
-import "../style.scss";
+import "@/Component/Main/style.scss";
 import { Form, Input, Button, Modal, notification } from "antd";
 import axios from "axios";
-import { API_URL, getCookie } from "../../../../config";
+import { API_URL, getCookie, layout, tailLayout } from "@/../config.ts";
 import {
     CheckCircleOutlined,
     ExclamationCircleOutlined,
@@ -133,7 +133,11 @@ export const FormEditContact = () => {
                     <Input />
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit">
+                    <Button
+                        className="button_submiit"
+                        type="primary"
+                        htmlType="submit"
+                    >
                         Edit
                     </Button>
                 </Form.Item>

@@ -1,11 +1,11 @@
-import * as Store from "../store";
+import { ItemHome, HomesReducer } from "../store";
 
-export const getApiHome = (states: Store.ItemHome[]) => ({
+export const getApiHome = (states: ItemHome[]) => ({
     type: "GET",
     states,
 });
 
-export const deleteItemHome = (item: Store.ItemHome): Store.HomesReducer => ({
+export const deleteItemHome = (item: ItemHome): HomesReducer => ({
     type: "DELETE",
     item: item,
 });
