@@ -44,7 +44,7 @@ export const EditHomeImage = (match) => {
                     });
                 });
                 setFile(result[0].Image);
-                document.title = `Edit ${newResult[0].Title}`;
+                document.title = `Edit Home Image`;
                 result.map((item) => {
                     return newResult2.push({
                         touched: true,

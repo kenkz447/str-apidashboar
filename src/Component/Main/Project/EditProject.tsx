@@ -188,8 +188,8 @@ export const EditProject = (match) => {
                     <Input />
                 </Form.Item>
                 <Form.Item label="Image">
-                    <div className="ant-btn">
-                        <label className="button-select-file" id="myfile">
+                    <div className="input-file-container">
+                        <label className="ant-btn" id="myfile">
                             Select Image
                         </label>
                         <Input

@@ -177,7 +177,6 @@ export const FormEditAbout = () => {
                             )}
                         </div>
                     </Form.Item>
-
                     <Form.Item>
                         <Button
                             className="button_submiit"
